@@ -1,0 +1,38 @@
+package celestial;
+
+public record ut_3() {
+   private final int class_;
+   private final int break_;
+
+   public ut_3(int var1, int var2) {
+      this.class_ = var1;
+      this.break_ = var2;
+   }
+
+   // $VF: Unable to simplify switch on enum
+   // Please report this to the Vineflower issue tracker, at https://github.com/Vineflower/vineflower/issues with a copy of the class file (if you have the rights to distribute it!)
+   public static ut_3 class_(uy_3 var0, int var1, int var2) {
+      return switch (var0) {
+         case HORIZONTAL -> new ut_3(var1, var2);
+         case VERTICAL -> new ut_3(var2, var1);
+      };
+   }
+
+   // $VF: Unable to simplify switch on enum
+   // Please report this to the Vineflower issue tracker, at https://github.com/Vineflower/vineflower/issues with a copy of the class file (if you have the rights to distribute it!)
+   public ut_3 class_(uq_3 var1) {
+      return switch (var1) {
+         case DOWN -> new ut_3(this.class_, this.break_ + 1);
+         case UP -> new ut_3(this.class_, this.break_ - 1);
+         case LEFT -> new ut_3(this.class_ - 1, this.break_);
+         case RIGHT -> new ut_3(this.class_ + 1, this.break_);
+      };
+   }
+
+   public int class_(uy_3 var1) {
+      return switch (var1) {
+         case HORIZONTAL -> this.class_;
+         case VERTICAL -> this.break_;
+      };
+   }
+}

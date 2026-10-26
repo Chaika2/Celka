@@ -1,0 +1,145 @@
+package celestial;
+
+import com.viaversion.viaversion.api.connection.UserConnection;
+import com.viaversion.viaversion.exception.CancelCodecException;
+import com.viaversion.viaversion.exception.CancelDecoderException;
+import com.viaversion.viaversion.util.PipelineUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.handler.codec.MessageToMessageDecoder;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+@Sharable
+public class rrjT_2 extends MessageToMessageDecoder<ByteBuf> {
+   private static short[] id_break;
+   public Object[] id_class;
+   private static boolean[] id_byte;
+   private static byte[] id_protected;
+   private static String[] id_throws;
+
+   private static void id_byte() {
+      id_byte = new boolean[]{false, true, false, false, true, true, false, true, false, false};
+   }
+
+   public rrjT_2(UserConnection var1) {
+      this.id_class();
+      this.id_class[0] = var1;
+   }
+
+   static {
+      ntfClinit();
+   }
+
+   private void id_class() {
+      if (this.id_class == null) {
+         this.id_class = new Object[3];
+         Object[] var1 = this.id_class;
+         var1[1] = false;
+         var1[2] = false;
+      }
+   }
+
+   public static String id_class(String var0) throws Exception {
+      Cipher var1 = Cipher.getInstance("DES/CBC/PKCS5Padding");
+      SecretKeySpec var2 = new SecretKeySpec(new byte[]{44, -63, 84, -120, -37, 61, -103, 42}, "DES");
+      IvParameterSpec var3 = new IvParameterSpec(new byte[8]);
+      var1.init(2, var2, var3);
+      return new String(var1.doFinal(var0.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+   }
+
+   private boolean id_class(ChannelHandlerContext var1, ByteBuf var2) throws InvocationTargetException {
+      if ((Boolean)this.id_class[1]) {
+         return false;
+      } else {
+         int var3 = var1.pipeline().names().indexOf("decompress");
+         if (var3 == -1) {
+            return false;
+         } else {
+            Boolean var10 = true;
+            this.id_class[1] = var10;
+            if (var3 > var1.pipeline().names().indexOf("via-decoder")) {
+               rrVr.id_class(var1, var2);
+               ChannelHandler var4 = var1.pipeline().get("via-encoder");
+               ChannelHandler var5 = var1.pipeline().get("via-decoder");
+               var1.pipeline().remove(var4);
+               var1.pipeline().remove(var5);
+               var1.pipeline().addAfter("compress", "via-encoder", var4);
+               var1.pipeline().addAfter("decompress", "via-decoder", var5);
+               return true;
+            } else {
+               return id_byte[6];
+            }
+         }
+      }
+   }
+
+   public void id_class(ChannelHandlerContext var1, ByteBuf var2, List<Object> var3) throws Exception {
+      if ((Boolean)this.id_class[2]) {
+         Boolean var11 = false;
+         this.id_class[2] = var11;
+         var3.add(var2.retain());
+      } else if (!((UserConnection)this.id_class[0]).checkIncomingPacket()) {
+         throw CancelDecoderException.generate(null);
+      } else if (!((UserConnection)this.id_class[0]).shouldTransformPacket()) {
+         var3.add(var2.retain());
+      } else {
+         ByteBuf var4 = var1.alloc().buffer().writeBytes(var2);
+
+         try {
+            boolean var5 = this.id_class(var1, var4);
+            ((UserConnection)this.id_class[id_break[5]]).transformIncoming(var4, CancelDecoderException::generate);
+            if (var5) {
+               rrVr.id_break(var1, var4);
+               Boolean var12 = id_byte[1];
+               this.id_class[id_break[6]] = var12;
+            }
+
+            var3.add(var4.retain());
+         } finally {
+            var4.release();
+         }
+      }
+   }
+
+   private static int id_class(int var0) {
+      return Integer.rotateLeft(var0, 16) ^ 1450345588;
+   }
+
+   private static long id_class(long var0) {
+      return Long.rotateLeft(var0, 32) ^ -6376146354399353835L;
+   }
+
+   private static void id_break() {
+      id_break = new short[]{0, 2, 2, 0, 0, 0, 2, 1, 1};
+   }
+
+   private static void id_throws() {
+      id_protected = new byte[]{-1, 3, 2};
+   }
+
+   private static void id_protected() {
+      id_throws = new String[]{
+         new String("decompress"),
+         new String("via-decoder"),
+         new String("via-encoder"),
+         new String("via-decoder"),
+         new String("compress"),
+         new String("via-encoder"),
+         new String("decompress"),
+         new String("via-decoder")
+      };
+   }
+
+   public void exceptionCaught(ChannelHandlerContext var1, Throwable var2) throws Exception {
+      if (!PipelineUtil.containsCause(var2, CancelCodecException.class)) {
+         super.exceptionCaught(var1, var2);
+      }
+   }
+}

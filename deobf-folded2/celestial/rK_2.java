@@ -1,0 +1,151 @@
+package celestial;
+
+import java.nio.charset.StandardCharsets;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public abstract class rK_2 implements C_int {
+   private static boolean[] id_break;
+   private static byte[] id_byte;
+   public Object[] id_class;
+   private static double[] id_protected;
+   private static float[] id_throws;
+   private static short[] id_case;
+
+   public abstract PX id_byte();
+
+   rK_2(rK_2 var1) {
+      this.id_implements();
+      Ps_1 var6 = (Ps_1)var1.id_class[0];
+      this.id_class[0] = var6;
+      Pr_1 var7 = ((Pr_1)var1.id_class[1]).id_class();
+      this.id_class[1] = var7;
+      Double var8 = (Double)var1.id_class[2];
+      this.id_class[2] = var8;
+      Double var9 = (Double)var1.id_class[3];
+      this.id_class[3] = var9;
+   }
+
+   public rK_2(Ps_1 var1) {
+      this.id_implements();
+      this.id_class[0] = var1;
+      Pr_1 var7 = new Pr_1();
+      this.id_class[1] = var7;
+   }
+
+   static {
+      ntfClinit();
+   }
+
+   private float id_class(float var1, float var2) {
+      float var3 = var2 - var1;
+      double var4 = this.id_break(var3);
+      return var1 + this.id_class(var4);
+   }
+
+   @Override
+   public void id_class(int var1) {
+      for (int var2 = 0; var2 < var1; var2++) {
+         this.id_break();
+      }
+   }
+
+   @Override
+   public C_int id_class() {
+      return new rD_2(this, this);
+   }
+
+   private static long id_class(long var0) {
+      return Long.rotateLeft(var0, 32) ^ 3234824775722761568L;
+   }
+
+   private float id_class(float var1) {
+      if (var1 < -20.0F) {
+         return var1 + 1.0F;
+      } else {
+         return var1 > 10.0F ? var1 - 1.0F : var1;
+      }
+   }
+
+   @Override
+   public PX id_class(PX var1) {
+      PX var2 = this.id_byte();
+      float var3 = var1.id_throws();
+      float var4 = var1.id_protected();
+      if (var4 == var2.id_protected()) {
+         var4 = this.id_class(var4);
+      }
+
+      var3 += (float)((Double)this.id_class[2]).doubleValue();
+      var4 += (float)((Double)this.id_class[3]).doubleValue();
+      return new PX(this.id_class(var2.id_throws(), var3), this.id_class(var2.id_protected(), var4)).id_class();
+   }
+
+   private float id_class(double var1) {
+      double var3 = ((Qw_1)((Ps_1)this.id_class[0]).id_throws().id_class[20]).id_class * 0.6F + 0.2F;
+      return (float)(var1 * var3 * var3 * var3 * 8.0) * 0.15F;
+   }
+
+   public static String id_class(String var0) throws Exception {
+      Cipher var1 = Cipher.getInstance("DES/CBC/PKCS5Padding");
+      SecretKeySpec var2 = new SecretKeySpec(new byte[]{-38, -61, -55, 51, -14, -24, 102, -50}, "DES");
+      IvParameterSpec var3 = new IvParameterSpec(new byte[8]);
+      var1.init(2, var2, var3);
+      return new String(var1.doFinal(var0.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+   }
+
+   private static int id_break(int var0) {
+      return Integer.rotateLeft(var0, 16) ^ 805709315;
+   }
+
+   @Override
+   public PX id_break(PX var1) {
+      PX var2 = this.id_class(var1);
+      this.id_break();
+      return var2;
+   }
+
+   @Override
+   public void id_break() {
+      double var1 = (Double)C_class.id_instanceof().t.id_class[0];
+      Double var7 = (((Pr_1)this.id_class[1]).id_byte() - 0.5) * var1;
+      this.id_class[2] = var7;
+      Double var8 = (((Pr_1)this.id_class[1]).id_byte() - 0.5) * var1;
+      this.id_class[3] = var8;
+   }
+
+   private double id_break(float var1) {
+      float var2 = this.id_class(1.0);
+      return (double)Math.round(var1 / var2);
+   }
+
+   private static void id_throws() {
+      id_protected = new double[]{0.5, 0.5, 1.0, 0.6F, 0.2F, 8.0, 0.0, 0.0};
+   }
+
+   private static void id_catch() {
+      id_break = new boolean[1];
+   }
+
+   private static void id_case() {
+      id_case = new short[]{0, 1, 0, 0, 1, 1, 2, 2, 3, 3, 2, 3, 0, 1, 2, 1, 3, 0, 20};
+   }
+
+   private void id_implements() {
+      if (this.id_class == null) {
+         this.id_class = new Object[4];
+         Object[] var1 = this.id_class;
+         var1[2] = 0.0;
+         var1[3] = 0.0;
+      }
+   }
+
+   private static void id_protected() {
+      id_throws = new float[]{-20.0F, 1.0F, 10.0F, 1.0F, 0.15F};
+   }
+
+   private static void id_private() {
+      id_byte = new byte[]{4, 2, 3};
+   }
+}

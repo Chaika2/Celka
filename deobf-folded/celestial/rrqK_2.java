@@ -1,0 +1,90 @@
+package celestial;
+
+import java.nio.charset.StandardCharsets;
+import java.util.function.IntSupplier;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public enum rrqK_2 {
+   public static Object[] staticFields052c2fa722bb33cbaa8dc8a4acf6b5f3;
+   private static byte[] bytes052c2fa722bb33cbaa8dc8a4acf6b5f3;
+   private static short[] shorts052c2fa722bb33cbaa8dc8a4acf6b5f3;
+   private static String[] strings052c2fa722bb33cbaa8dc8a4acf6b5f3;
+   private static boolean[] booleans052c2fa722bb33cbaa8dc8a4acf6b5f3;
+   public Object[] fields052c2fa722bb33cbaa8dc8a4acf6b5f3;
+
+   private void id_byte() {
+      if (this.fields052c2fa722bb33cbaa8dc8a4acf6b5f3 == null) {
+         this.fields052c2fa722bb33cbaa8dc8a4acf6b5f3 = new Object[1];
+      }
+   }
+
+   private rrqK_2(IntSupplier var3) {
+      this.id_byte();
+      this.fields052c2fa722bb33cbaa8dc8a4acf6b5f3[shorts052c2fa722bb33cbaa8dc8a4acf6b5f3[1]] = var3;
+   }
+
+   static {
+      ntfClinit();
+   }
+
+   private static long id_class(long var0) {
+      return Long.rotateLeft(var0, 32) ^ -4300174724976002016L;
+   }
+
+   public static String id_class(String var0) throws Exception {
+      Cipher var1 = Cipher.getInstance("DES/CBC/PKCS5Padding");
+      SecretKeySpec var2 = new SecretKeySpec(new byte[]{64, 91, -25, 30, -30, 120, -22, -14}, "DES");
+      IvParameterSpec var3 = new IvParameterSpec(new byte[8]);
+      var1.init(2, var2, var3);
+      return new String(var1.doFinal(var0.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+   }
+
+   public IntSupplier id_class() {
+      return (IntSupplier)this.fields052c2fa722bb33cbaa8dc8a4acf6b5f3[shorts052c2fa722bb33cbaa8dc8a4acf6b5f3[2]];
+   }
+
+   private static int id_class(int var0) {
+      return Integer.rotateLeft(var0, 16) ^ 1033652860;
+   }
+
+   private static void id_break() {
+      Object[] var0 = new Object[]{
+         new rrqK_2(((rrIz_1)BlockEsp.id_byte[7])::id_byte),
+         new rrqK_2(((rrIz_1)BlockEsp.id_byte[8])::id_byte),
+         new rrqK_2(((rrIz_1)BlockEsp.id_byte[9])::id_byte),
+         new rrqK_2(((rrIz_1)BlockEsp.id_byte[11])::id_byte),
+         new rrqK_2(((rrIz_1)BlockEsp.id_byte[12])::id_byte),
+         new rrqK_2(((rrIz_1)BlockEsp.id_byte[13])::id_byte),
+         new rrqK_2(((rrIz_1)BlockEsp.id_byte[10])::id_byte),
+         null
+      };
+      var0[7] = new rrqK_2[]{(rrqK_2)var0[0], (rrqK_2)var0[1], (rrqK_2)var0[2], (rrqK_2)var0[3], (rrqK_2)var0[4], (rrqK_2)var0[5], (rrqK_2)var0[6]};
+      staticFields052c2fa722bb33cbaa8dc8a4acf6b5f3 = var0;
+   }
+
+   private static void id_throws() {
+      booleans052c2fa722bb33cbaa8dc8a4acf6b5f3 = new boolean[]{false, true, false, false, true, true, true};
+   }
+
+   private static void id_catch() {
+      bytes052c2fa722bb33cbaa8dc8a4acf6b5f3 = new byte[]{7, 2, 3, 4, 5, 6, 7, 8, 2, 9, 2, 3, 11, 3, 4, 12, 4, 5, 13, 5, 6, 10, 6, 7, 8};
+   }
+
+   private static void id_case() {
+      shorts052c2fa722bb33cbaa8dc8a4acf6b5f3 = new short[]{7, 0, 0, 0, 1, 2, 3, 4, 5, 6};
+   }
+
+   private static void id_protected() {
+      strings052c2fa722bb33cbaa8dc8a4acf6b5f3 = new String[]{
+         new String("SPAWNER"),
+         new String("SHULKER"),
+         new String("CHEST"),
+         new String("MINECART"),
+         new String("DISPENSER"),
+         new String("GIFT"),
+         new String("BARREL")
+      };
+   }
+}

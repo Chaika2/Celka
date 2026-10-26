@@ -1,0 +1,45 @@
+package celestial;
+
+public enum rpa_3 {
+   NONE(rjg_3.IDENTITY),
+   LEFT_RIGHT(rjg_3.INVERT_Z),
+   FRONT_BACK(rjg_3.INVERT_X);
+
+   private final rjg_3 orientation;
+
+   private rpa_3(rjg_3 var3) {
+      this.orientation = var3;
+   }
+
+   public rqd_3 id_class(rpr_3 var1) {
+      rpB_2 var2 = var1.id_final();
+      return this == LEFT_RIGHT && var2 == rpB_2.Z || this == FRONT_BACK && var2 == rpB_2.X ? rqd_3.CLOCKWISE_180 : rqd_3.NONE;
+   }
+
+   public rjg_3 id_class() {
+      return this.orientation;
+   }
+
+   // $VF: Unable to simplify switch on enum
+   // Please report this to the Vineflower issue tracker, at https://github.com/Vineflower/vineflower/issues with a copy of the class file (if you have the rights to distribute it!)
+   public int id_class(int var1, int var2) {
+      int var3 = var2 / 2;
+      int var4 = var1 > var3 ? var1 - var2 : var1;
+      switch (this) {
+         case FRONT_BACK:
+            return (var2 - var4) % var2;
+         case LEFT_RIGHT:
+            return (var3 - var4 + var2) % var2;
+         default:
+            return var1;
+      }
+   }
+
+   public rpr_3 id_break(rpr_3 var1) {
+      if (this == FRONT_BACK && var1.id_final() == rpB_2.X) {
+         return var1.id_case();
+      } else {
+         return this == LEFT_RIGHT && var1.id_final() == rpB_2.Z ? var1.id_case() : var1;
+      }
+   }
+}

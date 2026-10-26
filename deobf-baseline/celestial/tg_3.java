@@ -1,0 +1,24 @@
+package celestial;
+
+public class tg_3 extends tt_3 {
+   private final Iq_1 id_break = new Iq_1(this, 32, 0);
+
+   public tg_3() {
+      super(0, 0, 64, 64);
+      this.id_break.id_class(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.25F);
+      this.id_break.id_class(0.0F, 0.0F, 0.0F);
+   }
+
+   @Override
+   public void id_class(float var1, float var2, float var3) {
+      super.id_class(var1, var2, var3);
+      this.id_break.id_catch = this.id_class.id_catch;
+      this.id_break.id_case = this.id_class.id_case;
+   }
+
+   @Override
+   public void id_class(Ml_1 var1, Ok_1 var2, int var3, int var4, float var5, float var6, float var7, float var8) {
+      super.id_class(var1, var2, var3, var4, var5, var6, var7, var8);
+      this.id_break.id_class(var1, var2, var3, var4, var5, var6, var7, var8);
+   }
+}

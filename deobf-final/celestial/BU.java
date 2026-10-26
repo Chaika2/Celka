@@ -1,0 +1,95 @@
+package celestial;
+
+import java.nio.charset.StandardCharsets;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public enum BU {
+   ;
+   private static boolean[] booleanse462c7c8b20936b69781915dd77e35b5;
+   private static byte[] bytese462c7c8b20936b69781915dd77e35b5;
+   private static String[] stringse462c7c8b20936b69781915dd77e35b5;
+   private static short[] shortse462c7c8b20936b69781915dd77e35b5;
+   public static Object[] staticFieldse462c7c8b20936b69781915dd77e35b5;
+   public Object[] fieldse462c7c8b20936b69781915dd77e35b5;
+
+   private void byte_() {
+      if (this.fieldse462c7c8b20936b69781915dd77e35b5 == null) {
+         this.fieldse462c7c8b20936b69781915dd77e35b5 = new Object[1];
+         Object[] var1 = this.fieldse462c7c8b20936b69781915dd77e35b5;
+      }
+   }
+
+   private BU(String var3) {
+      this.byte_();
+      this.fieldse462c7c8b20936b69781915dd77e35b5[0] = var3;
+   }
+
+   static {
+      ntfClinit();
+   }
+
+   private static int class_(int var0) {
+      return Integer.rotateLeft(var0, 16) ^ -336273553;
+   }
+
+   public String class_() {
+      return (String)this.fieldse462c7c8b20936b69781915dd77e35b5[0];
+   }
+
+   private static long class_(long var0) {
+      return Long.rotateLeft(var0, 32) ^ -1198338614388297684L;
+   }
+
+   public static BU class_(String var0) {
+      for (BU var4 : values()) {
+         if (var0.toLowerCase().contains("уровень лута: " + var4.class_().toLowerCase())) {
+            return var4;
+         }
+      }
+
+      return null;
+   }
+
+   public static String break_(String var0) throws Exception {
+      Cipher var1 = Cipher.getInstance("DES/CBC/PKCS5Padding");
+      SecretKeySpec var2 = new SecretKeySpec(new byte[]{-104, -94, 91, -84, 44, -16, -127, 51}, "DES");
+      IvParameterSpec var3 = new IvParameterSpec(new byte[8]);
+      var1.init(2, var2, var3);
+      return new String(var1.doFinal(var0.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+   }
+
+   private static void break_() {
+      Object[] var0 = new Object[]{new BU("Легендарный"), new BU("Элитный"), new BU("Богатый"), new BU("Солидный"), new BU("Обычный"), null};
+      var0[5] = new BU[]{(BU)var0[0], (BU)var0[1], (BU)var0[2], (BU)var0[3], (BU)var0[4]};
+      staticFieldse462c7c8b20936b69781915dd77e35b5 = var0;
+   }
+
+   private static void throws_() {
+      shortse462c7c8b20936b69781915dd77e35b5 = new short[]{5, 0, 0, 0, 1, 2, 3, 4};
+   }
+
+   private static void catch_() {
+      booleanse462c7c8b20936b69781915dd77e35b5 = new boolean[]{false, false, true, false, false, true, true, true};
+   }
+
+   private static void case_() {
+      bytese462c7c8b20936b69781915dd77e35b5 = new byte[]{5, 2, 3, 4, 2, 2, 3, 3, 4, 4, 5, 6};
+   }
+
+   private static void private_() {
+      stringse462c7c8b20936b69781915dd77e35b5 = new String[]{
+         new String("LEGENDARY"),
+         new String("Легендарный"),
+         new String("ELITE"),
+         new String("Элитный"),
+         new String("RICH"),
+         new String("Богатый"),
+         new String("SOLID"),
+         new String("Солидный"),
+         new String("COMMON"),
+         new String("Обычный")
+      };
+   }
+}

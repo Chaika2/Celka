@@ -1,0 +1,12 @@
+package celestial;
+
+public enum rEr_1 {
+   CROSSED,
+   ATTACKING,
+   SPELLCASTING,
+   BOW_AND_ARROW,
+   CROSSBOW_HOLD,
+   CROSSBOW_CHARGE,
+   CELEBRATING,
+   NEUTRAL;
+}

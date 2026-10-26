@@ -1,0 +1,132 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package celestial;
+
+import celestial.rVL;
+import celestial.raA_2;
+import celestial.raG_2;
+import celestial.raJ_2;
+import celestial.raM_2;
+import celestial.raN_2;
+import celestial.raO_2;
+import celestial.raV_2;
+import celestial.raW_2;
+import celestial.raX_2;
+import celestial.raY_2;
+import celestial.rab_3;
+import celestial.rac_3;
+import celestial.rad_3;
+import celestial.rag_3;
+import celestial.rah_3;
+import celestial.rak_3;
+import celestial.ram_3;
+import celestial.rao_3;
+import celestial.rar_3;
+import celestial.rau_3;
+import celestial.rax_3;
+import celestial.ray_3;
+import celestial.rcd_3;
+import celestial.reR_2;
+import celestial.rej_3;
+import celestial.rel_3;
+import celestial.riD_2;
+import celestial.riE_2;
+import celestial.riG_2;
+import celestial.riM_2;
+import celestial.riN_2;
+import celestial.riO_2;
+import celestial.riQ_2;
+import celestial.rib_3;
+import celestial.ric_3;
+import celestial.rid_3;
+import celestial.rik_3;
+import celestial.ril_3;
+import celestial.rir_3;
+import celestial.ris_3;
+import celestial.riw_3;
+import celestial.rix_3;
+import celestial.rrPt_1;
+import celestial.rrrE;
+import celestial.rrrG;
+import celestial.rrrJ;
+import celestial.rrrO;
+import celestial.rrrS;
+import celestial.rrrX;
+import celestial.rrrY;
+import celestial.rrrb_1;
+import celestial.rrrd_1;
+import celestial.rrrh_1;
+import celestial.rrrk_1;
+import celestial.rrrn_1;
+import celestial.rrrp_1;
+import celestial.rrrs_1;
+import celestial.rrrx_1;
+import celestial.rrrz_1;
+import java.util.Locale;
+
+public interface raF_2 {
+    public static final raF_2 id_class = raF_2.id_class(raV_2::new, "MSCorridor");
+    public static final raF_2 id_break = raF_2.id_class(rag_3::new, "MSCrossing");
+    public static final raF_2 id_byte = raF_2.id_class(raY_2::new, "MSRoom");
+    public static final raF_2 id_protected = raF_2.id_class(rao_3::new, "MSStairs");
+    public static final raF_2 id_throws = raF_2.id_class(rax_3::new, "NeBCr");
+    public static final raF_2 id_case = raF_2.id_class(rad_3::new, "NeBEF");
+    public static final raF_2 id_catch = raF_2.id_class(rau_3::new, "NeBS");
+    public static final raF_2 id_private = raF_2.id_class(raM_2::new, "NeCCS");
+    public static final raF_2 id_implements = raF_2.id_class(raO_2::new, "NeCTB");
+    public static final raF_2 id_finally = raF_2.id_class(rak_3::new, "NeCE");
+    public static final raF_2 id_extends = raF_2.id_class(raJ_2::new, "NeSCSC");
+    public static final raF_2 id_native = raF_2.id_class(raG_2::new, "NeSCLT");
+    public static final raF_2 id_volatile = raF_2.id_class(rah_3::new, "NeSC");
+    public static final raF_2 id_final = raF_2.id_class(rab_3::new, "NeSCRT");
+    public static final raF_2 id_package = raF_2.id_class(raW_2::new, "NeCSR");
+    public static final raF_2 id_int = raF_2.id_class(ram_3::new, "NeMT");
+    public static final raF_2 id_new = raF_2.id_class(raX_2::new, "NeRC");
+    public static final raF_2 id_continue = raF_2.id_class(raN_2::new, "NeSR");
+    public static final raF_2 id_super = raF_2.id_class(rac_3::new, "NeStart");
+    public static final raF_2 id_this = raF_2.id_class(rrrS::new, "SHCC");
+    public static final raF_2 id_else = raF_2.id_class(rrrs_1::new, "SHFC");
+    public static final raF_2 id_synchronized = raF_2.id_class(rrrE::new, "SH5C");
+    public static final raF_2 id_return = raF_2.id_class(rrrG::new, "SHLT");
+    public static final raF_2 id_public = raF_2.id_class(rrrb_1::new, "SHLi");
+    public static final raF_2 id_goto = raF_2.id_class(rrrO::new, "SHPR");
+    public static final raF_2 id_while = raF_2.id_class(rrrh_1::new, "SHPH");
+    public static final raF_2 id_try = raF_2.id_class(rrrX::new, "SHRT");
+    public static final raF_2 id_instanceof = raF_2.id_class(rrrJ::new, "SHRC");
+    public static final raF_2 id_throw = raF_2.id_class(rrrx_1::new, "SHSD");
+    public static final raF_2 id_interface = raF_2.id_class(rrrd_1::new, "SHStart");
+    public static final raF_2 id_char = raF_2.id_class(rrrz_1::new, "SHS");
+    public static final raF_2 id_abstract = raF_2.id_class(rrrk_1::new, "SHSSD");
+    public static final raF_2 id_long = raF_2.id_class(ray_3::new, "TeJP");
+    public static final raF_2 id_float = raF_2.id_class(ril_3::new, "ORP");
+    public static final raF_2 id_void = raF_2.id_class(raA_2::new, "Iglu");
+    public static final raF_2 id_static = raF_2.id_class(riw_3::new, "RUPO");
+    public static final raF_2 id_import = raF_2.id_class(rrrp_1::new, "TeSH");
+    public static final raF_2 id_short = raF_2.id_class(reR_2::new, "TeDP");
+    public static final raF_2 id_default = raF_2.id_class(rix_3::new, "OMB");
+    public static final raF_2 id_const = raF_2.id_class(rid_3::new, "OMCR");
+    public static final raF_2 id_strictfp = raF_2.id_class(ris_3::new, "OMDXR");
+    public static final raF_2 id_boolean = raF_2.id_class(riE_2::new, "OMDXYR");
+    public static final raF_2 id_transient = raF_2.id_class(riG_2::new, "OMDYR");
+    public static final raF_2 id_for = raF_2.id_class(rib_3::new, "OMDYZR");
+    public static final raF_2 id_double = raF_2.id_class(riM_2::new, "OMDZR");
+    public static final raF_2 id_switch = raF_2.id_class(riO_2::new, "OMEntry");
+    public static final raF_2 r = raF_2.id_class(rik_3::new, "OMPenthouse");
+    public static final raF_2 P = raF_2.id_class(riQ_2::new, "OMSimple");
+    public static final raF_2 B = raF_2.id_class(riN_2::new, "OMSimpleT");
+    public static final raF_2 S = raF_2.id_class(ric_3::new, "OMWR");
+    public static final raF_2 s = raF_2.id_class(rar_3::new, "ECP");
+    public static final raF_2 E = raF_2.id_class(rrrY::new, "WMP");
+    public static final raF_2 G = raF_2.id_class(rej_3::new, "BTP");
+    public static final raF_2 b = raF_2.id_class(riD_2::new, "Shipwreck");
+    public static final raF_2 M = raF_2.id_class(rir_3::new, "NeFos");
+    public static final raF_2 O = raF_2.id_class(rel_3::new, "jigsaw");
+
+    public rrrn_1 load(rrPt_1 var1, rcd_3 var2);
+
+    public static raF_2 id_class(raF_2 raF_22, String string) {
+        return rVL.id_class(rVL.I, string.toLowerCase(Locale.ROOT), raF_22);
+    }
+}
+

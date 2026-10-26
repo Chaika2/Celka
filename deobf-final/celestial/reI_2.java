@@ -1,0 +1,249 @@
+package celestial;
+
+import com.google.common.collect.ImmutableList;
+import com.mojang.datafixers.util.Pair;
+
+public class reI_2 {
+   static {
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/bases"),
+            new rqO_2("empty"),
+            ImmutableList.of(Pair.of(rev_3.break_("bastion/treasure/bases/lava_basin", rrPu_1.this_), 1)),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/stairs"),
+            new rqO_2("empty"),
+            ImmutableList.of(Pair.of(rev_3.break_("bastion/treasure/stairs/lower_stairs", rrPu_1.this_), 1)),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/bases/centers"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/bases/centers/center_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/bases/centers/center_1", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/bases/centers/center_2", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/bases/centers/center_3", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/brains"),
+            new rqO_2("empty"),
+            ImmutableList.of(Pair.of(rev_3.break_("bastion/treasure/brains/center_brain", rrPu_1.this_), 1)),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/walls"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/walls/lava_wall", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/entrance_wall", rrPu_1.throw_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/walls/outer"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/walls/outer/top_corner", rrPu_1.throw_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/outer/mid_corner", rrPu_1.throw_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/outer/bottom_corner", rrPu_1.throw_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/outer/outer_wall", rrPu_1.throw_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/outer/medium_outer_wall", rrPu_1.throw_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/outer/tall_outer_wall", rrPu_1.throw_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/walls/bottom"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/walls/bottom/wall_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/bottom/wall_1", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/bottom/wall_2", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/bottom/wall_3", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/walls/mid"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/walls/mid/wall_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/mid/wall_1", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/mid/wall_2", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/walls/top"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/walls/top/main_entrance", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/top/wall_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/walls/top/wall_1", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/connectors"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/connectors/center_to_wall_middle", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/connectors/center_to_wall_top", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/connectors/center_to_wall_top_entrance", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/entrances"),
+            new rqO_2("empty"),
+            ImmutableList.of(Pair.of(rev_3.break_("bastion/treasure/entrances/entrance_0", rrPu_1.this_), 1)),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/ramparts"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/ramparts/mid_wall_main", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/ramparts/mid_wall_side", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/ramparts/bottom_wall_0", rrPu_1.super_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/ramparts/top_wall", rrPu_1.interface_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/ramparts/lava_basin_side", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/ramparts/lava_basin_main", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/corners/bottom"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/corners/bottom/corner_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/corners/bottom/corner_1", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/corners/edges"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/corners/edges/bottom", rrPu_1.throw_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/corners/edges/middle", rrPu_1.throw_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/corners/edges/top", rrPu_1.throw_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/corners/middle"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/corners/middle/corner_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/corners/middle/corner_1", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/corners/top"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/corners/top/corner_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/corners/top/corner_1", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/extensions/large_pool"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/extensions/empty", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/empty", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/fire_room", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/large_bridge_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/large_bridge_1", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/large_bridge_2", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/large_bridge_3", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/roofed_bridge", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/empty", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/extensions/small_pool"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/extensions/empty", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/fire_room", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/empty", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/small_bridge_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/small_bridge_1", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/small_bridge_2", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/small_bridge_3", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/extensions/houses"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/extensions/house_0", rrPu_1.this_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/extensions/house_1", rrPu_1.this_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+      reZ_2.class_(
+         new reu_3(
+            new rqO_2("bastion/treasure/roofs"),
+            new rqO_2("empty"),
+            ImmutableList.of(
+               Pair.of(rev_3.break_("bastion/treasure/roofs/wall_roof", rrPu_1.instanceof_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/roofs/corner_roof", rrPu_1.instanceof_), 1),
+               Pair.of(rev_3.break_("bastion/treasure/roofs/center_roof", rrPu_1.instanceof_), 1)
+            ),
+            rem_3.RIGID
+         )
+      );
+   }
+
+   public static void class_() {
+   }
+}

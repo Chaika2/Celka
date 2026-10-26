@@ -1,0 +1,63 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package celestial;
+
+import celestial.ay_3;
+import celestial.iB_2;
+import celestial.rBk_1;
+import celestial.rGB;
+import celestial.rGS;
+import celestial.rKv_1;
+import celestial.rYB;
+import celestial.rfH_2;
+import celestial.rqn_3;
+
+public class rGh_1
+extends rBk_1 {
+    private int id_break;
+    public final /* synthetic */ rGB id_class;
+
+    @Override
+    public void id_byte() {
+        this.id_break = 10;
+        this.id_class.id_super = rGS.CIRCLE;
+        this.id_catch();
+    }
+
+    public rGh_1(rGB rGB2) {
+        this.id_class = rGB2;
+    }
+
+    @Override
+    public boolean id_class() {
+        iB_2 iB_22 = this.id_class.I_();
+        return iB_22 != null ? this.id_class.id_class(this.id_class.I_(), ay_3.id_class) : false;
+    }
+
+    @Override
+    public void id_throws() {
+        if (this.id_class.id_super == rGS.CIRCLE) {
+            --this.id_break;
+            if (this.id_break <= 0) {
+                this.id_class.id_super = rGS.SWOOP;
+                this.id_catch();
+                this.id_break = (8 + rGB.id_finally(this.id_class).nextInt(4)) * 20;
+                this.id_class.id_class(rqn_3.OY, 10.0f, 0.95f + rGB.id_extends(this.id_class).nextFloat() * 0.1f);
+            }
+        }
+    }
+
+    private void id_catch() {
+        this.id_class.id_protected = this.id_class.I_().Bs().id_break(20 + rGB.id_native(this.id_class).nextInt(20));
+        if (this.id_class.id_protected.c_() < ((rYB)this.id_class.id_throws[7]).id_short()) {
+            this.id_class.id_protected = new rfH_2(this.id_class.id_protected.b_(), ((rYB)this.id_class.id_throws[7]).id_short() + 1, this.id_class.id_protected.d_());
+        }
+    }
+
+    @Override
+    public void id_protected() {
+        this.id_class.id_protected = ((rYB)this.id_class.id_throws[7]).id_class(rKv_1.MOTION_BLOCKING, this.id_class.id_protected).id_break(10 + rGB.id_implements(this.id_class).nextInt(20));
+    }
+}
+

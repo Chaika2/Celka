@@ -1,0 +1,14 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package celestial;
+
+import celestial.Hn_1;
+
+public class Hq_1
+extends Hn_1 {
+    public Hq_1(String string, Runnable runnable, Runnable runnable2) {
+        super(string, runnable, runnable2);
+    }
+}
+

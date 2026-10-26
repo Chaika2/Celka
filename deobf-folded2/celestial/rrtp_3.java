@@ -1,0 +1,257 @@
+package celestial;
+
+import java.nio.charset.StandardCharsets;
+import java.util.function.BiFunction;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public class rrtp_3 extends rrtm_3 {
+   private static byte[] id_protected;
+   private static short[] id_throws;
+   private static String[] id_native;
+   private static boolean[] id_volatile;
+   private static float[] id_final;
+   public Object[] id_byte;
+   private static int[] id_package;
+
+   public rrtp_3(rrtN_2 var1, rrIm_1 var2, float var3, float var4, float var5, float var6) {
+      super(var3, var4, var5, var6);
+      this.id_goto();
+      rrtv_3 var11 = new rrtv_3((rrQK)rrQK.staticFieldsd7edc8a98bf936d38fa97cfea6cbd552[1], 0.4F, false);
+      this.id_byte[2] = var11;
+      AnimValue var12 = new AnimValue(0.3F, true);
+      this.id_byte[3] = var12;
+      this.id_byte[1] = var1;
+      this.id_byte[0] = var2;
+   }
+
+   static {
+      ntfClinit();
+   }
+
+   @Override
+   public boolean id_class(rrtu_3 var1, int var2, int var3, int var4, boolean var5) {
+      this.id_goto();
+      if (super.id_class(var1, var2, var3, var4, var5)) {
+         if (var4 == 0) {
+            Boolean var10 = true;
+            this.id_byte[4] = var10;
+         } else if (var4 == 2) {
+            ((rrIm_1)this.id_byte[0]).id_class(((rrIm_1)this.id_byte[0]).id_extends(), false, true);
+         }
+
+         return id_volatile[8];
+      } else {
+         return id_volatile[9];
+      }
+   }
+
+   @Override
+   public void id_class(Ml_1 var1, rrtu_3 var2, int var3, int var4) {
+      this.id_goto();
+      super.id_class(var1, var2, var3, var4);
+      float var5 = this.id_package();
+      float var6 = this.id_final();
+      float var7 = this.id_new();
+      float var8 = ((rrIm_1)this.id_byte[0]).id_class();
+      float var9 = ((rrIm_1)this.id_byte[0]).id_native();
+      float var10 = ((rrIm_1)this.id_byte[0]).id_byte();
+      float var11 = ((rrIm_1)this.id_byte[0]).id_volatile();
+      this.id_class(var5, var7, var8, var9, var11, var3);
+      this.id_private().id_interface().id_class(var1, () -> this.id_class(var1, var5, var6, var7, var8, var9, var10));
+   }
+
+   private void id_class(Ml_1 var1, float var2, float var3, float var4, float var5, float var6, float var7) {
+      this.id_goto();
+      int var8 = ColorHelper.id_class(0.0F);
+      int var9 = ColorHelper.id_class(180.0F);
+      String var10 = String.valueOf(var5);
+      String var11 = String.valueOf(var6);
+      ((AnimValue)this.id_byte[3]).id_break(var7);
+      boolean var12 = ((rrIm_1)this.id_byte[0]).id_final();
+      byte var13 = var12 ? 100 : id_protected[1];
+      float var14 = (float)((int)(((AnimValue)this.id_byte[3]).id_byte() * (float)var13)) / (float)var13;
+      String var15 = var14 + "";
+      if (var12 && var15.endsWith(".0") && var15.length() > 3) {
+         var15 = var15.substring(0, var15.length() - 2);
+      }
+
+      float var16 = (((rrIm_1)this.id_byte[0]).id_byte() - var5) / (var6 - var5);
+      ((rrtv_3)this.id_byte[2]).id_class().id_break(var16);
+      float var17 = ((rrtv_3)this.id_byte[2]).id_class().id_byte();
+      var11 = this.id_class(((rrIm_1)this.id_byte[0]).id_package(), var14, var11);
+      var15 = this.id_class(((rrIm_1)this.id_byte[0]).id_break(), var14, var15);
+      rrtF_2.id_protected(
+         var1,
+         this,
+         ((FontManager)FontManager.staticFields71d6c26f697c30cf88e2ba2ddc0b4971[0]).id_finally(),
+         ((rrIm_1)this.id_byte[0]).id_throws(),
+         var2,
+         var3,
+         rrZF.k_,
+         255
+      );
+      rrtF_2.id_protected(
+         var1, this, ((FontManager)FontManager.staticFields71d6c26f697c30cf88e2ba2ddc0b4971[0]).id_native(), var10, var2, var3 + 19.0F, rrZF.k_, 255
+      );
+      rrtF_2.id_protected(
+         var1,
+         this,
+         ((FontManager)FontManager.staticFields71d6c26f697c30cf88e2ba2ddc0b4971[0]).id_native(),
+         var11,
+         var2 + var4 + 1.0F - ((FontManager)FontManager.staticFields71d6c26f697c30cf88e2ba2ddc0b4971[0]).id_native().id_break(var11),
+         var3 + 19.0F,
+         rrZF.k_,
+         255
+      );
+      rrtF_2.id_break(
+         var1,
+         this,
+         ((FontManager)FontManager.staticFields71d6c26f697c30cf88e2ba2ddc0b4971[0]).id_native(),
+         var15,
+         var2 + var4 / 2.0F,
+         var3 + 19.0F,
+         rrZF.k_,
+         255
+      );
+      rrtF_2.id_class(var1, var2 + 1.0F, var3 + 10.0F, var4 - 1.0F, 2.0F, 1.0F, 6781311, this.id_class(255));
+      rrtF_2.id_class(var1, var2 + 1.0F, var3 + 10.0F, (var4 - 1.0F) * var17, 2.0F, 1.0F, var8, var8, var9, var9, this.id_class(255));
+      float var18 = rfU_2.id_class(var2 + var4 * var17, var2 + 3.0F, var2 + var4 - 2.0F);
+      rrtF_2.id_class(var1, this, var18, var3 + 11.0F, 8.0F, rrZF.d_, 255, this.id_private().id_long() * rrvk_1.id_class());
+   }
+
+   private static long id_class(long var0) {
+      return Long.rotateLeft(var0, 32) ^ 4563716211253658676L;
+   }
+
+   private String id_class(BiFunction<rrIm_1, Float, String> var1, float var2, String var3) {
+      this.id_goto();
+      if (var1 != null) {
+         String var4 = (String)var1.apply((rrIm_1)this.id_byte[0], var2);
+         if (var4 != null) {
+            var3 = var4;
+         }
+      }
+
+      return var3;
+   }
+
+   private void id_class(float var1, float var2, float var3, float var4, float var5, int var6) {
+      this.id_goto();
+      if ((Boolean)this.id_byte[4]) {
+         float var7 = rrfQ_2.id_class(((float)var6 - var1) * (var4 - var3) / var2 + var3, var5);
+         ((rrIm_1)this.id_byte[0]).id_class(rfU_2.id_class(var7, var3, var4), false, true);
+      }
+   }
+
+   @Override
+   public boolean id_break(int var1, int var2, int var3) {
+      this.id_goto();
+      if (super.id_break(var1, var2, var3)) {
+         Boolean var8 = false;
+         this.id_byte[4] = var8;
+         return true;
+      } else {
+         return id_volatile[12];
+      }
+   }
+
+   private static int id_break(int var0) {
+      return Integer.rotateLeft(var0, 16) ^ 1162221727;
+   }
+
+   public static String id_break(String var0) throws Exception {
+      Cipher var1 = Cipher.getInstance("DES/CBC/PKCS5Padding");
+      SecretKeySpec var2 = new SecretKeySpec(new byte[]{-82, -121, -41, -76, 63, 53, -99, 75}, "DES");
+      IvParameterSpec var3 = new IvParameterSpec(new byte[8]);
+      var1.init(2, var2, var3);
+      return new String(var1.doFinal(var0.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+   }
+
+   @Override
+   public Setting<?> id_finally() {
+      this.id_goto();
+      return (rrIm_1)this.id_byte[0];
+   }
+
+   private void id_goto() {
+      if (this.id_byte == null) {
+         this.id_byte = new Object[5];
+         Object[] var1 = this.id_byte;
+         var1[4] = false;
+      }
+   }
+
+   @Override
+   public void id_case() {
+      this.id_goto();
+      super.id_case();
+      Boolean var5 = false;
+      this.id_byte[4] = var5;
+   }
+
+   private static void id_instanceof() {
+      id_package = new int[]{6781311};
+   }
+
+   private static void id_return() {
+      id_throws = new short[]{
+         1, 2, 3, 1, 0, 0, 0, 0, 0, 3, 0, 3, 0, 2, 2, 0, 0, 0, 0, 255, 0, 255, 0, 0, 255, 0, 255, 255, 255, 255, 4, 0, 0, 4, 0, 0, 4, 4, 1, 0
+      };
+   }
+
+   private static void id_try() {
+      id_protected = new byte[]{100, 10, 3, 2, 2, 5, 4};
+   }
+
+   private static void id_while() {
+      id_volatile = new boolean[]{false, true, false, false, true, true, false, true, true, false, false, true, false, false, false};
+   }
+
+   private static void id_public() {
+      id_final = new float[]{
+         0.4F,
+         0.3F,
+         0.0F,
+         180.0F,
+         19.0F,
+         1.0F,
+         19.0F,
+         2.0F,
+         19.0F,
+         1.0F,
+         10.0F,
+         1.0F,
+         2.0F,
+         1.0F,
+         1.0F,
+         10.0F,
+         1.0F,
+         2.0F,
+         1.0F,
+         3.0F,
+         2.0F,
+         11.0F,
+         8.0F,
+         8.0F,
+         1.0F,
+         6.0F
+      };
+   }
+
+   @Override
+   public rrtN_2 id_private() {
+      this.id_goto();
+      return (rrtN_2)this.id_byte[1];
+   }
+
+   @Override
+   public rruv_1 id_volatile() {
+      return new rruv_1(this.id_package(), this.id_final() + 8.0F, this.id_new() + 1.0F, 6.0F);
+   }
+
+   private static void id_synchronized() {
+      id_native = new String[]{new String(".0")};
+   }
+}

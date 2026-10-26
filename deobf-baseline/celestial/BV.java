@@ -1,0 +1,105 @@
+package celestial;
+
+import java.nio.charset.StandardCharsets;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public enum BV {
+   private static boolean[] booleansb1ef2a77de6235bb9d31938bdf7ffd8a;
+   public Object[] fieldsb1ef2a77de6235bb9d31938bdf7ffd8a;
+   public static Object[] staticFieldsb1ef2a77de6235bb9d31938bdf7ffd8a;
+   private static byte[] bytesb1ef2a77de6235bb9d31938bdf7ffd8a;
+   private static short[] shortsb1ef2a77de6235bb9d31938bdf7ffd8a;
+   private static String[] stringsb1ef2a77de6235bb9d31938bdf7ffd8a;
+
+   private static void id_byte() {
+      booleansb1ef2a77de6235bb9d31938bdf7ffd8a = new boolean[]{false, false, true, false, false, true, true, true};
+   }
+
+   private BV(String var3) {
+      this.id_case();
+      this.fieldsb1ef2a77de6235bb9d31938bdf7ffd8a[shortsb1ef2a77de6235bb9d31938bdf7ffd8a[2]] = var3;
+   }
+
+   static {
+      ntfClinit();
+   }
+
+   public String id_class() {
+      return (String)this.fieldsb1ef2a77de6235bb9d31938bdf7ffd8a[shortsb1ef2a77de6235bb9d31938bdf7ffd8a[1]];
+   }
+
+   private static long id_class(long var0) {
+      return Long.rotateLeft(var0, 32) ^ -5952751240161125735L;
+   }
+
+   public static String id_class(String var0) throws Exception {
+      Cipher var1 = Cipher.getInstance("DES/CBC/PKCS5Padding");
+      SecretKeySpec var2 = new SecretKeySpec(new byte[]{-108, 4, 41, -15, -88, -75, 87, -35}, "DES");
+      IvParameterSpec var3 = new IvParameterSpec(new byte[8]);
+      var1.init(2, var2, var3);
+      return new String(var1.doFinal(var0.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+   }
+
+   private static int id_class(int var0) {
+      return Integer.rotateLeft(var0, 16) ^ 1455232475;
+   }
+
+   private static void id_break() {
+      Object[] var0 = new Object[]{
+         new BV(stringsb1ef2a77de6235bb9d31938bdf7ffd8a[1]),
+         new BV(stringsb1ef2a77de6235bb9d31938bdf7ffd8a[3]),
+         new BV(stringsb1ef2a77de6235bb9d31938bdf7ffd8a[5]),
+         new BV(stringsb1ef2a77de6235bb9d31938bdf7ffd8a[7]),
+         new BV(stringsb1ef2a77de6235bb9d31938bdf7ffd8a[9]),
+         null
+      };
+      var0[5] = new BV[]{(BV)var0[0], (BV)var0[1], (BV)var0[2], (BV)var0[3], (BV)var0[4]};
+      staticFieldsb1ef2a77de6235bb9d31938bdf7ffd8a = var0;
+   }
+
+   public static BV id_break(String var0) {
+      BV[] var1 = values();
+      int var2 = var1.length;
+
+      for (int var3 = booleansb1ef2a77de6235bb9d31938bdf7ffd8a[0]; var3 < var2; var3++) {
+         BV var4 = var1[var3];
+         if (var0.toLowerCase().contains("уровень лута: " + var4.id_class().toLowerCase())) {
+            return var4;
+         }
+      }
+
+      return null;
+   }
+
+   private static void id_throws() {
+      bytesb1ef2a77de6235bb9d31938bdf7ffd8a = new byte[]{5, 2, 3, 4, 2, 2, 3, 3, 4, 4, 5, 6};
+   }
+
+   private static void id_catch() {
+      shortsb1ef2a77de6235bb9d31938bdf7ffd8a = new short[]{5, 0, 0, 0, 1, 2, 3, 4};
+   }
+
+   private void id_case() {
+      if (this.fieldsb1ef2a77de6235bb9d31938bdf7ffd8a == null) {
+         this.fieldsb1ef2a77de6235bb9d31938bdf7ffd8a = new Object[booleansb1ef2a77de6235bb9d31938bdf7ffd8a[7]];
+         Object[] var1 = this.fieldsb1ef2a77de6235bb9d31938bdf7ffd8a;
+      }
+   }
+
+   private static void id_private() {
+      stringsb1ef2a77de6235bb9d31938bdf7ffd8a = new String[]{
+         new String("LEGENDARY"),
+         new String("Легендарный"),
+         new String("ELITE"),
+         new String("Элитный"),
+         new String("RICH"),
+         new String("Богатый"),
+         new String("SOLID"),
+         new String("Солидный"),
+         new String("COMMON"),
+         new String("Обычный")
+      };
+   }
+}

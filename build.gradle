@@ -1,0 +1,750 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'ru.celestial'
+version = 'Beta-1.16.5'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+// src/main/java/celestial/** is a reference copy of the client's decompiled
+// classes (the game loads celestial.* from the runtime jar, not from this
+// source tree). It is not part of the build: keep it on disk for reading, but
+// do not feed it to javac, which chokes on decompiler artefacts.
+sourceSets {
+    main {
+        java {
+            exclude 'celestial/**'
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.compilerArgs += ['-nowarn', '-Xlint:none', '-Xmaxerrs', '10000']
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    remapWorker
+}
+
+dependencies {
+    // Minecraft client classes are kept separately; all external runtime libraries
+    // are resolved from the supplied libraries/ directory.
+    implementation files('libs/celestial-client-remapped.jar')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    remapWorker 'org.ow2.asm:asm:9.7.1'
+    remapWorker 'org.ow2.asm:asm-commons:9.7.1'
+}
+
+// The loader receives one client jar. Embed the remapped Minecraft classes so
+// net.minecraft.client.main.Main is available at runtime.
+tasks.named('jar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        zipTree(file('libs/celestial-client-remapped.jar')).matching {
+            exclude('net/minecraft/client/main/Main.class')
+        }
+    }
+}
+
+tasks.register('remapClientJar') {
+    group = 'build'
+    description = 'Remaps celestial-client-remapped.jar to match reorganized package structure'
+    
+    doLast {
+        def mappings = [
+            // event
+            'celestial/EventTarget': 'celestial/event/EventTarget',
+            'celestial/PacketEvent': 'celestial/event/PacketEvent',
+            'celestial/RenderEvent': 'celestial/event/RenderEvent',
+            // setting
+            'celestial/Setting': 'celestial/setting/Setting',
+            'celestial/ButtonSetting': 'celestial/setting/ButtonSetting',
+            'celestial/CheckGroup': 'celestial/setting/CheckGroup',
+            'celestial/GroupSetting': 'celestial/setting/GroupSetting',
+            'celestial/KeyBind': 'celestial/setting/KeyBind',
+            // module core
+            'celestial/Module': 'celestial/module/Module',
+            'celestial/ModuleManager': 'celestial/module/ModuleManager',
+            'celestial/Category': 'celestial/module/Category',
+            // combat
+            'celestial/AntiBot': 'celestial/module/combat/AntiBot',
+            'celestial/AttackAura': 'celestial/module/combat/AttackAura',
+            'celestial/AutoDuel': 'celestial/module/combat/AutoDuel',
+            'celestial/AutoExplosion': 'celestial/module/combat/AutoExplosion',
+            'celestial/AutoGApple': 'celestial/module/combat/AutoGApple',
+            'celestial/AutoPotion': 'celestial/module/combat/AutoPotion',
+            'celestial/AutoSwap': 'celestial/module/combat/AutoSwap',
+            'celestial/AutoTotem': 'celestial/module/combat/AutoTotem',
+            'celestial/AutoUse': 'celestial/module/combat/AutoUse',
+            'celestial/BowSpam': 'celestial/module/combat/BowSpam',
+            'celestial/Criticals': 'celestial/module/combat/Criticals',
+            'celestial/FastSwap': 'celestial/module/combat/FastSwap',
+            'celestial/HitBoxes': 'celestial/module/combat/HitBoxes',
+            'celestial/HitSounds': 'celestial/module/combat/HitSounds',
+            'celestial/Popka': 'celestial/module/combat/Popka',
+            'celestial/SuperBow': 'celestial/module/combat/SuperBow',
+            'celestial/TapeMouse': 'celestial/module/combat/TapeMouse',
+            'celestial/TriggerBot': 'celestial/module/combat/TriggerBot',
+            'celestial/Velocity': 'celestial/module/combat/Velocity',
+            'celestial/FriendProtect': 'celestial/module/combat/FriendProtect',
+            // movement
+            'celestial/AutoSprint': 'celestial/module/movement/AutoSprint',
+            'celestial/Blink': 'celestial/module/movement/Blink',
+            'celestial/BlocksLift': 'celestial/module/movement/BlocksLift',
+            'celestial/Flight': 'celestial/module/movement/Flight',
+            'celestial/GuiMove': 'celestial/module/movement/GuiMove',
+            'celestial/KeepSprint': 'celestial/module/movement/KeepSprint',
+            'celestial/NoClip': 'celestial/module/movement/NoClip',
+            'celestial/NoSlow': 'celestial/module/movement/NoSlow',
+            'celestial/Speed': 'celestial/module/movement/Speed',
+            'celestial/Spider': 'celestial/module/movement/Spider',
+            'celestial/Strafe': 'celestial/module/movement/Strafe',
+            'celestial/SuperFirework': 'celestial/module/movement/SuperFirework',
+            'celestial/Timer': 'celestial/module/movement/Timer',
+            'celestial/WaterSpeed': 'celestial/module/movement/WaterSpeed',
+            // render
+            'celestial/ArrayListHud': 'celestial/module/render/ArrayListHud',
+            'celestial/BlockEsp': 'celestial/module/render/BlockEsp',
+            'celestial/ChinaHat': 'celestial/module/render/ChinaHat',
+            'celestial/Crosshair': 'celestial/module/render/Crosshair',
+            'celestial/DeathCoords': 'celestial/module/render/DeathCoords',
+            'celestial/Esp2D': 'celestial/module/render/Esp2D',
+            'celestial/Hud': 'celestial/module/render/Hud',
+            'celestial/ItemPhysics': 'celestial/module/render/ItemPhysics',
+            'celestial/JumpCircles': 'celestial/module/render/JumpCircles',
+            'celestial/NoRender': 'celestial/module/render/NoRender',
+            'celestial/Notifications': 'celestial/module/render/Notifications',
+            'celestial/Pointers': 'celestial/module/render/Pointers',
+            'celestial/ShulkerPreview': 'celestial/module/render/ShulkerPreview',
+            'celestial/StaffViewer': 'celestial/module/render/StaffViewer',
+            'celestial/StructureTimer': 'celestial/module/render/StructureTimer',
+            'celestial/SwingAnimations': 'celestial/module/render/SwingAnimations',
+            'celestial/TimeChanger': 'celestial/module/render/TimeChanger',
+            'celestial/Trails': 'celestial/module/render/Trails',
+            // player
+            'celestial/AutoExp': 'celestial/module/player/AutoExp',
+            'celestial/AutoFish': 'celestial/module/player/AutoFish',
+            'celestial/AutoLeave': 'celestial/module/player/AutoLeave',
+            'celestial/AutoReconnect': 'celestial/module/player/AutoReconnect',
+            'celestial/AutoRespawn': 'celestial/module/player/AutoRespawn',
+            'celestial/AutoTool': 'celestial/module/player/AutoTool',
+            'celestial/ChestStealer': 'celestial/module/player/ChestStealer',
+            'celestial/ElytraSwap': 'celestial/module/player/ElytraSwap',
+            'celestial/FastBreak': 'celestial/module/player/FastBreak',
+            'celestial/FreeCamera': 'celestial/module/player/FreeCamera',
+            'celestial/GhostHand': 'celestial/module/player/GhostHand',
+            'celestial/ItemsDelay': 'celestial/module/player/ItemsDelay',
+            'celestial/NoDelay': 'celestial/module/player/NoDelay',
+            'celestial/NoInteract': 'celestial/module/player/NoInteract',
+            'celestial/NoPush': 'celestial/module/player/NoPush',
+            'celestial/NoServerRots': 'celestial/module/player/NoServerRots',
+            'celestial/Nuker': 'celestial/module/player/Nuker',
+            'celestial/ProjectileHelper': 'celestial/module/player/ProjectileHelper',
+            'celestial/StreamerMode': 'celestial/module/player/StreamerMode',
+            // util
+            'celestial/AntiAfk': 'celestial/module/util/AntiAfk',
+            'celestial/AntiShuffler': 'celestial/module/util/AntiShuffler',
+            'celestial/AutoAccept': 'celestial/module/util/AutoAccept',
+            'celestial/AutoAuth': 'celestial/module/util/AutoAuth',
+            'celestial/AutoBuy': 'celestial/module/util/AutoBuy',
+            'celestial/BaseFinder': 'celestial/module/util/BaseFinder',
+            'celestial/CasinoBot': 'celestial/module/util/CasinoBot',
+            'celestial/ChatHelper': 'celestial/module/util/ChatHelper',
+            'celestial/ClanUpgrader': 'celestial/module/util/ClanUpgrader',
+            'celestial/ClickFriend': 'celestial/module/util/ClickFriend',
+            'celestial/ClickPearl': 'celestial/module/util/ClickPearl',
+            'celestial/CreeperFarm': 'celestial/module/util/CreeperFarm',
+            'celestial/EventParser': 'celestial/module/util/EventParser',
+            'celestial/FarmBuilder': 'celestial/module/util/FarmBuilder',
+            'celestial/FtHelper': 'celestial/module/util/FtHelper',
+            'celestial/GriefJoiner': 'celestial/module/util/GriefJoiner',
+            'celestial/HwHelper': 'celestial/module/util/HwHelper',
+            'celestial/ItemScroller': 'celestial/module/util/ItemScroller',
+            'celestial/ItemsOverlay': 'celestial/module/util/ItemsOverlay',
+            'celestial/LeaveTracker': 'celestial/module/util/LeaveTracker',
+            'celestial/MinecraftOptimizer': 'celestial/module/util/MinecraftOptimizer',
+            'celestial/PotionTracker': 'celestial/module/util/PotionTracker',
+            'celestial/RwHelper': 'celestial/module/util/RwHelper',
+            'celestial/SrpSpoofer': 'celestial/module/util/SrpSpoofer',
+            'celestial/TestFunc': 'celestial/module/util/TestFunc',
+            'celestial/TotemTracker': 'celestial/module/util/TotemTracker',
+            'celestial/TpsSync': 'celestial/module/util/TpsSync',
+            'celestial/UseTracker': 'celestial/module/util/UseTracker',
+            'celestial/XRay': 'celestial/module/util/XRay',
+            // clickgui
+            'celestial/ClickGuiScreen': 'celestial/ui/clickgui/ClickGuiScreen',
+            'celestial/ClickGuiTheme': 'celestial/ui/clickgui/ClickGuiTheme',
+            'celestial/GuiComponent': 'celestial/ui/clickgui/GuiComponent',
+            'celestial/GuiList': 'celestial/ui/clickgui/GuiList',
+            // hud
+            'celestial/HudWidget': 'celestial/ui/hud/HudWidget',
+            'celestial/NotificationStyle': 'celestial/ui/hud/NotificationStyle',
+            'celestial/TargetHud': 'celestial/ui/hud/TargetHud',
+            // manager
+            'celestial/ConfigManager': 'celestial/manager/ConfigManager',
+            'celestial/FontManager': 'celestial/manager/FontManager',
+            'celestial/ShaderManager': 'celestial/manager/ShaderManager',
+            'celestial/SkinProvider': 'celestial/manager/SkinProvider',
+            'celestial/ThemeManager': 'celestial/manager/ThemeManager',
+            'celestial/ThemeType': 'celestial/manager/ThemeType',
+            // util
+            'celestial/AnimValue': 'celestial/util/AnimValue',
+            'celestial/BlurShader': 'celestial/util/BlurShader',
+            'celestial/ColorHelper': 'celestial/util/ColorHelper',
+            'celestial/FuntimeEnchantment': 'celestial/util/FuntimeEnchantment',
+            'celestial/MinecraftAccessor': 'celestial/util/MinecraftAccessor',
+            'celestial/ReversedList': 'celestial/util/ReversedList',
+            'celestial/SyntheticSwitch': 'celestial/util/SyntheticSwitch',
+            'celestial/ZipStream': 'celestial/util/ZipStream'
+        ]
+
+        def sourceJar = file('libs/celestial-client-remapped.jar.bak')
+        if (!sourceJar.exists()) {
+            sourceJar = file('libs/celestial-client-remapped.jar')
+        }
+        def targetJar = file('libs/celestial-client-remapped.jar')
+        def tempJar = file('libs/celestial-client-remapped.tmp')
+
+        def urls = configurations.remapWorker.files.collect { it.toURI().toURL() } as URL[]
+        def cl = new URLClassLoader(urls, ClassLoader.systemClassLoader)
+
+        def classReaderClass = cl.loadClass('org.objectweb.asm.ClassReader')
+        def classWriterClass = cl.loadClass('org.objectweb.asm.ClassWriter')
+        def classRemapperClass = cl.loadClass('org.objectweb.asm.commons.ClassRemapper')
+        def simpleRemapperClass = cl.loadClass('org.objectweb.asm.commons.SimpleRemapper')
+
+        def remapperInstance = simpleRemapperClass.getConstructor(Map.class).newInstance(mappings)
+
+        println "[Remapper] Remapping ${sourceJar.name} -> ${targetJar.name}..."
+
+        def zipIn = new java.util.zip.ZipFile(sourceJar)
+        def zipOut = new java.util.zip.ZipOutputStream(new FileOutputStream(tempJar))
+
+        def entries = zipIn.entries()
+        while (entries.hasMoreElements()) {
+            def entry = entries.nextElement()
+            def name = entry.name
+            def is = zipIn.getInputStream(entry)
+            def bytes = is.readAllBytes()
+            is.close()
+
+            if (name.endsWith('.class')) {
+                try {
+                    def cr = classReaderClass.getConstructor(byte[].class).newInstance([bytes] as Object[])
+                    def cw = classWriterClass.getConstructor(int.class).newInstance([0] as Object[])
+                    def remapper = classRemapperClass.getConstructor(cl.loadClass('org.objectweb.asm.ClassVisitor'), cl.loadClass('org.objectweb.asm.commons.Remapper')).newInstance([cw, remapperInstance] as Object[])
+                    def acceptMethod = classReaderClass.getMethod('accept', cl.loadClass('org.objectweb.asm.ClassVisitor'), int.class)
+                    acceptMethod.invoke(cr, [remapper, 0] as Object[])
+                    bytes = cw.toByteArray()
+
+                    def entryClassName = name.substring(0, name.length() - 6)
+                    if (mappings.containsKey(entryClassName)) {
+                        name = mappings[entryClassName] + '.class'
+                    }
+                } catch (Exception e) {
+                    println "Warning remapping ${name}: ${e.message}"
+                }
+            }
+
+            def newEntry = new java.util.zip.ZipEntry(name)
+            zipOut.putNextEntry(newEntry)
+            zipOut.write(bytes)
+            zipOut.closeEntry()
+        }
+
+        zipIn.close()
+        zipOut.close()
+
+        if (targetJar.exists()) targetJar.delete()
+        tempJar.renameTo(targetJar)
+
+        println "[Remapper] Done! Successfully remapped jar."
+    }
+}
+
+
+application {
+    // The default entry point is the standalone launcher window. The game
+    // itself is still started through offline.launcher.OfflineLauncher (see
+    // run/runClient below); the launcher spawns it in a child JVM.
+    mainClass = 'launcher.CelestialLauncher'
+}
+
+def configureClientExec(JavaExec task) {
+    def targetGameDir = file('run')
+    if (!targetGameDir.exists()) targetGameDir.mkdirs()
+    def defaultMcAssets = file("${System.getProperty('user.home')}/AppData/Roaming/.minecraft/assets")
+    def runAssets = file('run/assets')
+    // A folder only counts as "real" assets if it actually has the asset index file
+    // (indexes/1.16.json) that vanilla sound/lang loading depends on -- just existing
+    // as an empty/partial directory (common with other launchers) is not enough.
+    // Vanilla ships sounds.json + lang/*.json + sounds/*.ogg through that index, NOT
+    // inside the client jar, so without it the game is completely silent.
+    def hasRealAssets = { File dir -> file("${dir}/indexes/1.16.json").exists() }
+    // Shipped launcher resolves assets as "<install>/Celestial/assets"; for dev runs
+    // from this repo that is the sibling directory next to Celestial-Sources.
+    def installAssetsCandidates = [
+        rootProject.file('../Celestial/assets'),
+        file('C:/Celestial/assets'),
+        file("${System.getProperty('user.home')}/AppData/Roaming/CollapseLoader/assets")
+    ]
+    def installAssets = installAssetsCandidates.find { hasRealAssets(it) }
+    def targetAssetsDir = hasRealAssets(runAssets) ? runAssets
+        : (installAssets != null ? installAssets
+        : (hasRealAssets(defaultMcAssets) ? defaultMcAssets : runAssets))
+
+    println "[Celestial] Using assets dir: ${targetAssetsDir.absolutePath} (has index: ${hasRealAssets(targetAssetsDir)})"
+
+    task.javaLauncher = javaToolchains.launcherFor(java.toolchain)
+    task.classpath = sourceSets.main.runtimeClasspath
+    task.mainClass = 'offline.launcher.OfflineLauncher'
+    task.workingDir = targetGameDir
+    
+    task.jvmArgs = [
+        "-Xms512m",
+        "-Xmx4g",
+        "-Djava.library.path=${file('natives').absolutePath}",
+        "-Djna.library.path=${file('natives').absolutePath}",
+        "-Dorg.lwjgl.librarypath=${file('natives').absolutePath}",
+        "-Djna.tmpdir=${file('natives').absolutePath}",
+        "-Dsun.net.client.defaultConnectTimeout=1500",
+        "-Dsun.net.client.defaultReadTimeout=1500",
+        "-Dlog4j2.formatMsgNoLookups=true",
+        "--add-opens=java.base/java.lang=ALL-UNNAMED",
+        "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+        "--add-opens=java.base/java.net=ALL-UNNAMED",
+        "--add-opens=java.base/java.nio=ALL-UNNAMED",
+        "--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED",
+        "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+        "--add-opens=jdk.unsupported/sun.misc=ALL-UNNAMED",
+        "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED"
+    ]
+    
+    task.args = [
+        '--username', 'Player',
+        '--version', 'Beta 1.16.5',
+        '--gameDir', targetGameDir.absolutePath,
+        '--assetsDir', targetAssetsDir.absolutePath,
+        '--assetIndex', '1.16',
+        '--uuid', 'bd346dd5-ac1c-427d-87e8-73bdd4bf3e13',
+        '--accessToken', '0',
+        '--userType', 'legacy',
+        '--versionType', 'release',
+        '--userProperties', '{}',
+        '--width', '1280',
+        '--height', '720'
+    ]
+}
+
+tasks.named('run', JavaExec) {
+    group = 'execution'
+    description = 'Runs the Celestial Client'
+    dependsOn 'prepareAq1Fix'
+    dependsOn 'prepareShieldBreakFix'
+    configureClientExec(it)
+}
+
+tasks.register('runClient', JavaExec) {
+    group = 'execution'
+    description = 'Runs the Celestial Client'
+    dependsOn 'prepareAq1Fix'
+    dependsOn 'prepareShieldBreakFix'
+    configureClientExec(it)
+}
+
+// ---------------------------------------------------------------------------
+// launcher
+//
+// Opens the standalone launcher window: nickname field + "Запустить" button.
+// The window itself starts the client in a child JVM (offline.launcher.
+// OfflineLauncher) with the same classpath, JVM flags and game directory as
+// the run tasks, so the patched classes in run/celestial-fix are used.
+// Use: gradlew launcher
+// ---------------------------------------------------------------------------
+tasks.register('launcher', JavaExec) {
+    group = 'execution'
+    description = 'Opens the Celestial launcher window (nickname + start button)'
+    dependsOn 'prepareAq1Fix'
+    dependsOn 'prepareShieldBreakFix'
+
+    def targetGameDir = file('run')
+    if (!targetGameDir.exists()) targetGameDir.mkdirs()
+
+    javaLauncher = javaToolchains.launcherFor(java.toolchain)
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'launcher.CelestialLauncher'
+    workingDir = projectDir
+    jvmArgs = [
+        "-Dlog4j2.formatMsgNoLookups=true",
+        "--add-opens=java.base/java.lang=ALL-UNNAMED",
+        "--add-opens=java.base/java.lang.reflect=ALL-UNNAMED",
+        "--add-opens=java.base/java.net=ALL-UNNAMED",
+        "--add-opens=java.base/java.nio=ALL-UNNAMED",
+        "--add-opens=java.base/jdk.internal.misc=ALL-UNNAMED",
+        "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED",
+        "--add-opens=jdk.unsupported/sun.misc=ALL-UNNAMED",
+        "--add-exports=java.base/jdk.internal.misc=ALL-UNNAMED"
+    ]
+}
+
+// ---------------------------------------------------------------------------
+// Standalone .exe (jpackage app-image)
+//
+// `gradlew packageLauncher` produces
+//   build/launcher-app/CelestialLauncher/CelestialLauncher.exe
+//
+// The image bundles a JDK 21 runtime (all modules, so the child game JVM gets
+// the same module set as `gradlew run`), the launcher classes, every client
+// library, the natives and the patched celestial classes. The game assets and
+// the `run` folder stay outside and are located at runtime.
+// `gradlew launcherZip` additionally packs the image into a zip.
+// ---------------------------------------------------------------------------
+def launcherLibJarNames = fileTree('libs') { include '*.jar' }
+        .files
+        .findAll { it.name != 'celestial-client-remapped.jar' }
+        .collect { it.name }
+        .sort()
+
+tasks.register('launcherClientJar', Jar) {
+    group = 'distribution'
+    description = 'Repackages the runtime client jar without its Main.class (the launcher bootstrap must win)'
+    archiveFileName = 'celestial-client-app.jar'
+    destinationDirectory = layout.buildDirectory.dir('launcher-client')
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from({ zipTree(file('libs/celestial-client-remapped.jar')) }) {
+        exclude 'net/minecraft/client/main/Main.class'
+        exclude 'META-INF/*.SF', 'META-INF/*.RSA', 'META-INF/*.DSA'
+    }
+}
+
+tasks.register('launcherJar', Jar) {
+    group = 'distribution'
+    description = 'Builds the launcher jar with a Class-Path manifest pointing at the bundled libraries'
+    dependsOn 'classes'
+    archiveFileName = 'celestial-launcher.jar'
+    destinationDirectory = layout.buildDirectory.dir('launcher-jar')
+    from sourceSets.main.output
+    manifest {
+        attributes(
+            'Main-Class': 'launcher.CelestialLauncher',
+            'Class-Path': (['celestial-client-app.jar'] + launcherLibJarNames).join(' ')
+        )
+    }
+}
+
+tasks.register('prepareLauncherInput', Sync) {
+    group = 'distribution'
+    description = 'Stages jars, natives and patched classes for the jpackage app-image'
+    dependsOn 'launcherJar', 'launcherClientJar', 'prepareAq1Fix', 'prepareShieldBreakFix'
+    into layout.buildDirectory.dir('launcher-input')
+    from(tasks.named('launcherJar'))
+    from(tasks.named('launcherClientJar'))
+    from(fileTree('libs') { include '*.jar'; exclude 'celestial-client-remapped.jar' })
+    from('natives') { into 'natives' }
+    from(layout.buildDirectory.dir('celestial-fix')) { into 'celestial-fix' }
+}
+
+tasks.register('packageLauncher', Exec) {
+    group = 'distribution'
+    description = 'Builds the standalone Celestial launcher .exe (jpackage app-image)'
+    dependsOn 'prepareLauncherInput'
+
+    def inputDir = layout.buildDirectory.dir('launcher-input').get().asFile
+    def outputRoot = layout.buildDirectory.dir(project.findProperty('launcherAppDir') ?: 'launcher-app').get().asFile
+
+    doFirst {
+        delete outputRoot
+        outputRoot.mkdirs()
+
+        def isWindows = System.getProperty('os.name').toLowerCase().contains('win')
+        def jdkHome = javaToolchains.launcherFor(java.toolchain).get().metadata.installationPath.asFile
+        def jpackage = new File(jdkHome, isWindows ? 'bin/jpackage.exe' : 'bin/jpackage')
+        if (!jpackage.isFile()) {
+            throw new GradleException("jpackage not found in ${jdkHome}; a full JDK 17+ is required")
+        }
+
+        // Bundle every module: the launcher starts the client with this runtime,
+        // and the client needs much more than java.base (desktop, net.http,
+        // zipfs, unsupported/Unsafe, charsets for the chat codepage, ...).
+        def modules = []
+        def javaBinary = new File(jdkHome, isWindows ? 'bin/java.exe' : 'bin/java')
+        def listProcess = new ProcessBuilder(javaBinary.absolutePath, '--list-modules')
+                .redirectErrorStream(true).start()
+        listProcess.inputStream.getText('UTF-8').readLines().each { line ->
+            def name = line.split('@')[0].trim()
+            if (name) modules.add(name)
+        }
+        listProcess.waitFor()
+
+        commandLine([
+            jpackage.absolutePath,
+            '--type', 'app-image',
+            '--dest', outputRoot.absolutePath,
+            '--name', 'CelestialLauncher',
+            '--app-version', '1.0.0',
+            '--vendor', 'Celestial',
+            '--description', 'Celestial Launcher (Beta 1.16.5)',
+            '--input', inputDir.absolutePath,
+            '--main-jar', 'celestial-launcher.jar',
+            '--main-class', 'launcher.CelestialLauncher',
+            '--add-modules', modules.join(','),
+            '--java-options', '-Dlog4j2.formatMsgNoLookups=true'
+        ])
+    }
+
+    doLast {
+        def appImage = new File(outputRoot, 'CelestialLauncher')
+        def exe = new File(appImage, 'CelestialLauncher.exe')
+
+        // jpackage strips the java launchers from the bundled runtime, but the
+        // launcher starts the game in a child JVM (java.home/bin/java.exe).
+        // Copy them back so the image is self-contained.
+        def isWindows = System.getProperty('os.name').toLowerCase().contains('win')
+        def jdkHome = javaToolchains.launcherFor(java.toolchain).get().metadata.installationPath.asFile
+        def runtimeBin = new File(appImage, 'runtime/bin')
+        copy {
+            from new File(jdkHome, 'bin')
+            include(isWindows ? 'java.exe' : 'java')
+            include(isWindows ? 'javaw.exe' : '')
+            into runtimeBin
+        }
+        def childJava = new File(runtimeBin, isWindows ? 'java.exe' : 'java')
+        if (!childJava.isFile()) {
+            throw new GradleException("java launcher missing in the app-image runtime: ${childJava}")
+        }
+
+        println "[jpackage] Launcher: ${exe.absolutePath} (exists: ${exe.isFile()})"
+        println "[jpackage] Child JVM: ${childJava.absolutePath}"
+    }
+}
+
+tasks.register('launcherZip', Zip) {
+    group = 'distribution'
+    description = 'Zips the standalone launcher app-image'
+    dependsOn 'packageLauncher'
+    archiveFileName = 'CelestialLauncher-windows-x64.zip'
+    destinationDirectory = layout.buildDirectory.dir('distributions')
+    from(layout.buildDirectory.dir(project.findProperty('launcherAppDir') ?: 'launcher-app'))
+}
+
+// ---------------------------------------------------------------------------
+// prepareAq1Fix
+//
+// Produces build/celestial-fix/celestial/Aq_1.class -- a byte-identical copy of
+// the class from the runtime jar with one bug fixed. The runtime jar is
+// SHA-256 gated (CollapseLoader re-downloads it from the CDN when modified), so
+// it is never touched; instead src Main prepends this directory to the nested
+// game classloader so the patched class wins.
+//
+// Bug: in Aq_1.id_class(rvD_2) (server teleport handler) the rotation reported
+// back to the server through CPlayerPositionAndRotation (rZX) and rrAH was taken
+// from the local player instead of from the teleport packet. Together with the
+// hardcoded player yaw of -180.0f set in id_class(rvZ_2) (JoinGame) this made
+// the client confirm a teleport and then immediately report yaw=-180/pitch=0,
+// which MineLegacy's mandatory-teleport validator rejected (re-issuing the
+// teleport with a new id until the client was kicked to Lobby).
+//
+// The edits are length preserving, so no branch offsets change:
+//   offset 53108 (17 bytes) "f3 = player.yaw"   -> nops
+//   offset 53125 (17 bytes) "f4 = player.pitch" -> nops
+//   offset 53142 (15 bytes) rrAH arg1 (yaw)     -> fload 34 + nops
+//   offset 53157 (15 bytes) rrAH arg2 (pitch)   -> fload 35 + nops
+//   offset 53263 ( 5 bytes) rZX yaw   = rrAH   -> fload 34 + nops
+//   offset 53268 ( 5 bytes) rZX pitch = rrAH   -> fload 35 + nops
+// The rZX edits matter because celestial/rrCS is a listener on the same event
+// bus and rewrites rrAH with the local player rotation when Aq_1 dispatches the
+// event, which re-introduced the bug even after rrAH was built correctly.
+// Slots 34/35 hold the correctly computed rotation (packet rotation plus any
+// relative-rotation flags applied earlier in the same method).
+// ---------------------------------------------------------------------------
+tasks.register('prepareAq1Fix') {
+    group = 'build'
+    description = 'Builds the patched celestial/Aq_1.class used to fix the MineLegacy teleport kick'
+
+    def librariesDir = file("${System.getProperty('user.home')}/AppData/Roaming/CollapseLoader/celestial-libraries")
+    def sourceJar = new File(librariesDir, 'celestial-client-remapped.jar')
+    def outDir = file('build/celestial-fix')
+    def outClass = new File(outDir, 'celestial/Aq_1.class')
+
+    inputs.file(sourceJar).optional()
+    outputs.file(outClass).optional()
+
+    doLast {
+        if (!sourceJar.isFile()) {
+            println "[Aq_1 fix] runtime jar not found, skipping: ${sourceJar}"
+            return
+        }
+
+        byte[] bytes
+        new java.util.zip.ZipFile(sourceJar).withCloseable { zip ->
+            def entry = zip.getEntry('celestial/Aq_1.class')
+            if (entry == null) {
+                throw new GradleException("celestial/Aq_1.class not found in ${sourceJar}")
+            }
+            bytes = zip.getInputStream(entry).bytes
+        }
+
+        def hex = { byte[] b, int off, int len ->
+            (off..<(off + len)).collect { String.format('%02X', b[it] & 0xFF) }.join(' ')
+        }
+        def expect = { int off, String want, String what ->
+            int n = want.split(' ').length
+            String got = hex(bytes, off, n)
+            if (got != want) {
+                throw new GradleException(
+                    "unexpected bytecode at offset ${off} (${what}): expected [${want}], found [${got}]. " +
+                    "The runtime jar differs from the version this fix targets.")
+            }
+        }
+
+        // Full 17-byte "load local yaw/pitch into f3/f4" sequences (event override).
+        expect(53108, '19 08 B4 03 B8 13 0D AF 32 C0 00 F5 B6 03 51 38 22', 'f3 = player.yaw')
+        expect(53125, '19 08 B4 03 B8 13 0D B6 32 C0 00 F5 B6 03 51 38 23', 'f4 = player.pitch')
+        // 15-byte "push local player.yaw/pitch" expressions used as rrAH arguments.
+        expect(53142, '19 08 B4 03 B8 13 0D AF 32 C0 00 F5 B6 03 51', 'rrAH yaw argument')
+        expect(53157, '19 08 B4 03 B8 13 0D B6 32 C0 00 F5 B6 03 51', 'rrAH pitch argument')
+        // 5-byte "aload 36; invokevirtual rrAH.id_class/id_byte:()F" (rZX args).
+        expect(53263, '19 24 B6 03 EF', 'rZX yaw argument')
+        expect(53268, '19 24 B6 03 F1', 'rZX pitch argument')
+
+        def fill = { int off, int len, int value ->
+            for (int i = 0; i < len; i++) {
+                bytes[off + i] = (byte) value
+            }
+        }
+        def emitFload = { int off, int len, int slot ->
+            fill(off, len, 0x00)
+            bytes[off] = (byte) 0x17      // fload <slot>
+            bytes[off + 1] = (byte) slot
+        }
+        fill(53108, 17, 0x00)     // drop: f3 = player.yaw
+        fill(53125, 17, 0x00)     // drop: f4 = player.pitch
+        emitFload(53142, 15, 0x22) // fload 34 (yaw) for rrAH
+        emitFload(53157, 15, 0x23) // fload 35 (pitch) for rrAH
+        emitFload(53263, 5, 0x22)  // fload 34 (yaw) for rZX
+        emitFload(53268, 5, 0x23)  // fload 35 (pitch) for rZX
+
+        outClass.parentFile.mkdirs()
+        outClass.bytes = bytes
+        println "[Aq_1 fix] wrote ${outClass} (${bytes.length} bytes)"
+    }
+}
+
+// ---------------------------------------------------------------------------
+// prepareShieldBreakFix
+//
+// Copies our patched celestial/rrnD_2.class (the AttackAura hit handler) into
+// the same celestial-fix/ directory the Aq_1 fix uses. The nested game
+// classloader prepends that directory, so our copy of rrnD_2 wins over the one
+// in the SHA-256 gated runtime jar. src/main/java can't do this on its own
+// because the game runs in a child classloader that does not see the Gradle
+// application classpath.
+//
+// The class fixes the shield breaker: instead of the (broken) visible
+// held-item swap that happened *after* the hit, it silently swaps to an axe,
+// performs the real server hit so MineLegacy counts it as an axe hit, then
+// silently swaps back - the local player never sees the switch.
+// ---------------------------------------------------------------------------
+tasks.register('prepareShieldBreakFix') {
+    group = 'build'
+    description = 'Compiles the patched celestial/rrnD_2.class against the runtime jar into build/celestial-fix'
+
+    def srcDir = file('shieldbreak-src')
+    def outDir = file('build/shieldbreak')
+    def outClass = file('build/celestial-fix/celestial/rrnD_2.class')
+    def runDir = file('run/celestial-fix')
+    def runClass = file('run/celestial-fix/celestial/rrnD_2.class')
+    def outContainer = file('build/celestial-fix/celestial/rrwI_2.class')
+    def runContainer = file('run/celestial-fix/celestial/rrwI_2.class')
+    def buildAq1 = file('build/celestial-fix/celestial/Aq_1.class')
+    def runAq1 = file('run/celestial-fix/celestial/Aq_1.class')
+
+    // The patch must be compiled against the *runtime* jar (flat celestial.*
+    // package names), not the remapped build jar, because the nested game
+    // classloader loads classes from the runtime jar.
+    def librariesDir = file("${System.getProperty('user.home')}/AppData/Roaming/CollapseLoader/celestial-libraries")
+    def runtimeJar = new File(librariesDir, 'celestial-client-remapped.jar')
+
+    inputs.dir(srcDir).optional()
+    inputs.file(runtimeJar).optional()
+    outputs.file(outClass).optional()
+    outputs.file(runClass).optional()
+    outputs.file(outContainer).optional()
+    outputs.file(runContainer).optional()
+
+    doLast {
+        if (!runtimeJar.isFile()) {
+            println "[ShieldBreak fix] runtime jar not found, skipping: ${runtimeJar}"
+            return
+        }
+
+        // Resolve the JDK 21 javac used by the java toolchain.
+        def launcher = javaToolchains.launcherFor(java.toolchain).get()
+        def javac = new File(launcher.metadata.installationPath.asFile, 'bin/javac')
+        if (System.getProperty('os.name').toLowerCase().contains('win')) {
+            javac = new File(javac.parentFile, 'javac.exe')
+        }
+
+        def sources = fileTree(srcDir) { include '**/*.java' }.files.collect { it.absolutePath }
+        if (sources.isEmpty()) {
+            println "[ShieldBreak fix] no sources in ${srcDir}, skipping"
+            return
+        }
+
+        outDir.deleteDir()
+        outDir.mkdirs()
+
+        // Compile against the runtime jar plus the bundled libraries (fastutil,
+        // datafixerupper, authlib, ...) that celestial.* references.
+        def libraryJars = fileTree('libs') { include '*.jar' }.files
+        def classpath = ([runtimeJar] + libraryJars).collect { it.absolutePath }.join(File.pathSeparator)
+
+        def result = exec {
+            ignoreExitValue = true
+            commandLine([javac.absolutePath, '-encoding', 'UTF-8', '-nowarn',
+                         '-cp', classpath, '-d', outDir.absolutePath] + sources)
+        }
+        if (result.exitValue != 0) {
+            throw new GradleException("ShieldBreak patch failed to compile (javac exit ${result.exitValue})")
+        }
+
+        def compiled = new File(outDir, 'celestial/rrnD_2.class')
+        if (!compiled.isFile()) {
+            throw new GradleException("ShieldBreak patch did not produce ${compiled}")
+        }
+
+        // Copy every compiled shadow class (rrnD_2, rrwI_2, ...) into the fix
+        // directories. The nested game classloader lets these win over the jar.
+        fileTree(outDir) { include '**/*.class' }.files.sort { it.path }.each { classFile ->
+            def relative = outDir.toPath().relativize(classFile.toPath()).toString()
+            def buildTarget = new File(file('build/celestial-fix'), relative)
+            buildTarget.parentFile.mkdirs()
+            buildTarget.bytes = classFile.bytes
+            def runTarget = new File(runDir, relative)
+            runTarget.parentFile.mkdirs()
+            runTarget.bytes = classFile.bytes
+            println "[ShieldBreak fix] wrote ${buildTarget} (${classFile.length()} bytes)"
+            println "[ShieldBreak fix] wrote ${runTarget} (${classFile.length()} bytes)"
+        }
+
+        // The fix directory is only prepended when celestial/Aq_1.class is present
+        // too (see net.minecraft.client.main.Main#resolveAq1FixDir). Mirror it so a
+        // run picks up the shield-break class even without prepareAq1Fix.
+        if (buildAq1.isFile() && !runAq1.isFile()) {
+            runAq1.parentFile.mkdirs()
+            runAq1.bytes = buildAq1.bytes
+            println "[ShieldBreak fix] wrote ${runAq1} (${buildAq1.length()} bytes)"
+        }
+    }
+}

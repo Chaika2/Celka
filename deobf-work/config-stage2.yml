@@ -1,0 +1,29 @@
+# Stage 2 — runs on the output of stage 1.
+#
+#   java -Xmx8g -jar <deobfuscator.jar> --config config-stage2.yml
+#
+# Stage 1 (config.yml) already did: peephole cleanup, illegal-signature /
+# annotation removal, and Class/Method/Field name normalisation.
+#
+# Stage 2 adds the passes that are only safe *after* the first normalisation:
+#
+#   * DuplicateRenamer  — gives every still-duplicated simple name a unique one
+#                         (the obfuscator reuses id_class / id_break everywhere)
+#   * EnumNormalizer    — rewrites the enum-shaped artifacts that decompilers
+#                         otherwise render as illegal `extends Enum<...>` code
+#   * PackageNormalizer — tidies leftover package layout
+#
+# Deliberately NOT included:
+#   * smoke.NumberObfuscationTransformer — the only match was a false positive
+#     (see docs/obfuscator-signature.md), running it would corrupt real code.
+#   * any flow-obfuscation transformer — this jar has no control-flow obfuscation.
+
+input: out/celestial-stage1.jar
+output: out/celestial-stage2.jar
+
+path:
+  - "C:/Users/Chaik/AppData/Roaming/CollapseLoader/celestial-libraries/celestial-client-remapped.jar"
+
+transformers:
+  - normalizer.DuplicateRenamer: {}
+  - normalizer.EnumNormalizer: {}

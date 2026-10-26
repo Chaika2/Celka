@@ -1,0 +1,21 @@
+package celestial;
+
+public enum rmU_2 {
+   PRESS_SHIFT_KEY,
+   RELEASE_SHIFT_KEY,
+   STOP_SLEEPING,
+   START_SPRINTING,
+   STOP_SPRINTING,
+   START_RIDING_JUMP,
+   STOP_RIDING_JUMP,
+   OPEN_INVENTORY,
+   START_FALL_FLYING;
+
+   private rmU_2() {
+   }
+
+   // $FF: synthetic method
+   private static rmU_2[] id_class() {
+      return new rmU_2[]{PRESS_SHIFT_KEY, RELEASE_SHIFT_KEY, STOP_SLEEPING, START_SPRINTING, STOP_SPRINTING, START_RIDING_JUMP, STOP_RIDING_JUMP, OPEN_INVENTORY, START_FALL_FLYING};
+   }
+}

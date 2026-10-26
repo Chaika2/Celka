@@ -1,0 +1,26 @@
+package celestial;
+
+import com.google.gson.JsonObject;
+import java.util.function.Function;
+
+public class rWc_1<T extends rkw_3<?>> implements rkf_3<T> {
+   private final Function<rqO_2, T> id_synchronized;
+
+   public rWc_1(Function<rqO_2, T> var1) {
+      this.id_synchronized = var1;
+   }
+
+   @Override
+   public void id_class(ruu_3 var1, T var2) {
+   }
+
+   @Override
+   public T id_break(rqO_2 var1, JsonObject var2) {
+      return this.id_synchronized.apply(var1);
+   }
+
+   @Override
+   public T id_break(rqO_2 var1, ruu_3 var2) {
+      return this.id_synchronized.apply(var1);
+   }
+}

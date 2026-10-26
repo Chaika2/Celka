@@ -1,0 +1,764 @@
+package celestial;
+
+import com.google.common.collect.ImmutableSet;
+import com.mojang.brigadier.context.StringRange;
+import com.mojang.brigadier.suggestion.Suggestion;
+import com.mojang.brigadier.suggestion.Suggestions;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public enum C_break implements MinecraftAccessor {
+   private static short[] shortsf9703d96375232b196815afd59d1eb48;
+   public static Object[] staticFieldsf9703d96375232b196815afd59d1eb48;
+   private static String[] stringsf9703d96375232b196815afd59d1eb48;
+   private static byte[] bytesf9703d96375232b196815afd59d1eb48;
+   private static boolean[] booleansf9703d96375232b196815afd59d1eb48;
+
+   public void id_byte() {
+      BiFunction var1 = j_1.id_break();
+
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         V var4 = var3.id_throw().id_catch() != null && var3.id_throw().id_case() != null
+            ? (V)V.staticFields30e1cd8580ce39faa61be3646b7cc079[0]
+            : (V)V.staticFields30e1cd8580ce39faa61be3646b7cc079[1];
+         j_1 var5 = (j_1)var1.apply((Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[0], var4);
+         var3.s().id_class(var5);
+         ((rrQX)rrQX.staticFields09f1f28026cd378cb9df490a64ac8f2a[0]).id_finally().id_class(var5);
+         rrtu_3.id_protected();
+      }
+   }
+
+   public void id_byte(ruS_2<?> var1, rum_3 var2) {
+      if (var2 == rum_3.CLIENTBOUND) {
+         for (C_case var4 : C_throws.id_class().id_case()) {
+            if (var4.id_throw().id_catch() != null
+               && ((Aq_1)var4.id_throw().id_catch().id_break[0]).id_class() == ((Aq_1)((cb_3)id_import.id_class[57]).id_break[0]).id_class()) {
+               var4.s()
+                  .id_break(new y_1(((Aq_1)((cb_3)id_import.id_class[57]).id_break[0]).id_class(), (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[0], var1));
+            }
+         }
+      }
+   }
+
+   static {
+      ntfClinit();
+   }
+
+   public void id_class(rrLC var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrnM_2 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   private static long id_class(long var0) {
+      return Long.rotateLeft(var0, 32) ^ 3863380551831026542L;
+   }
+
+   public void id_class(rrLm_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrFY var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rvC_2 var1) {
+      if ((Boolean)C_class.id_instanceof().M.id_class[0]) {
+         rfj_3[] var2 = new rfj_3[booleansf9703d96375232b196815afd59d1eb48[4]];
+         var1.id_class((var1x, var2x) -> {
+            if (((ImmutableSet)St_1.id_class[0]).contains(var2x.id_break())) {
+               var2[0] = new rfj_3(var1x);
+            }
+         });
+         if (var2[0] != null) {
+            for (C_case var4 : C_throws.id_class().id_case()) {
+               cb_3 var5 = var4.id_throw().id_catch();
+               if (var5 != null && (Aq_1)var5.id_break[0] == (Aq_1)((cb_3)id_import.id_class[57]).id_break[0]) {
+                  l_1 var6 = new l_1(
+                     (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[1],
+                     (H)H.staticFields1fafa9bf76ed3352892023b88da3732d[2],
+                     var2[0].id_break,
+                     var2[0].id_byte
+                  );
+                  var4.s().id_class(var6);
+               }
+            }
+         }
+      }
+   }
+
+   public void id_class(rrLE var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLF var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLc_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAq_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAz_1 var1) {
+      C_case var2 = C_throws.id_class().id_private();
+      if (var2 != null) {
+         var2.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrnB_2 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrnd_3 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLf_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public static String id_class(String var0) throws Exception {
+      Cipher var1 = Cipher.getInstance("DES/CBC/PKCS5Padding");
+      SecretKeySpec var2 = new SecretKeySpec(new byte[]{-43, 25, 19, -8, 69, -62, -79, 101}, "DES");
+      IvParameterSpec var3 = new IvParameterSpec(new byte[8]);
+      var1.init(2, var2, var3);
+      return new String(var1.doFinal(var0.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+   }
+
+   public void id_class(rrAH var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rZD var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         cb_3 var4 = var3.id_throw().id_catch();
+         if (var4 != null && (Aq_1)var4.id_break[0] == (Aq_1)((cb_3)id_import.id_class[57]).id_break[0]) {
+            l_1 var5 = new l_1(
+               (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[1],
+               var1.id_case() ? (H)H.staticFields1fafa9bf76ed3352892023b88da3732d[2] : (H)H.staticFields1fafa9bf76ed3352892023b88da3732d[3],
+               var1.id_byte(),
+               var1.id_protected()
+            );
+            var3.s().id_class(var5);
+         }
+      }
+   }
+
+   public void id_class(rrFU var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLu_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAg_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public boolean id_class(rhx_3 var1) {
+      C_case var2 = C_throws.id_class().id_private();
+      if (var2 == null) {
+         return var1.id_byte;
+      } else {
+         return !var2.id_this().id_catch() && var1.id_byte ? true : booleansf9703d96375232b196815afd59d1eb48[1];
+      }
+   }
+
+   public void id_class(rrAQ var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLI var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrFj_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rZR var1) {
+      if ((Boolean)C_class.id_instanceof().M.id_class[0]) {
+         if (((ImmutableSet)St_1.id_class[0]).contains(var1.id_break().id_break())) {
+            for (C_case var3 : C_throws.id_class().id_case()) {
+               cb_3 var4 = var3.id_throw().id_catch();
+               if (var4 != null && (Aq_1)var4.id_break[0] == (Aq_1)((cb_3)id_import.id_class[57]).id_break[0]) {
+                  l_1 var5 = new l_1(
+                     (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[1],
+                     (H)H.staticFields1fafa9bf76ed3352892023b88da3732d[2],
+                     var1.id_byte().b_() >> 4,
+                     var1.id_byte().d_() >> 4
+                  );
+                  var3.s().id_class(var5);
+               }
+            }
+         }
+      }
+   }
+
+   private static int id_class(int var0) {
+      return Integer.rotateLeft(var0, 16) ^ 169463401;
+   }
+
+   public boolean id_class(Vu_1 var1) {
+      C_case var2 = C_throws.id_class().id_private();
+      if (var2 == null) {
+         return var1.id_protected();
+      } else {
+         I var3 = ((rrQX)rrQX.staticFields09f1f28026cd378cb9df490a64ac8f2a[0]).id_finally().id_class(I.id_break(null));
+         var2.s().id_class(var3);
+         if (var3.id_class() != null) {
+            return var3.id_class();
+         } else {
+            return var2 != C_throws.id_class().id_break() ? false : var1.id_protected();
+         }
+      }
+   }
+
+   public void id_class(rrAN var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(q_1 var1) {
+      C_case var2 = C_throws.id_class().id_private();
+      if (var2 != null) {
+         var2.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrns_3 var1) {
+      C_case var2 = C_throws.id_class().id_private();
+      if (var2 != null) {
+         var2.s().id_class(var1);
+      }
+   }
+
+   public void id_class(iB_2 var1) {
+      if (cb_3.class.isInstance(var1)) {
+         C_case var2 = C_throws.id_class().id_private();
+         if (var2 != null) {
+            t_1 var3 = ((t_1)t_1.id_class[0]).id_break((w_1)w_1.staticFieldsa114f317008a3fe78339d2b3c5e6fe39[0]);
+            var2.s().id_class(var3);
+         }
+      }
+   }
+
+   public void id_class(rrLX var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAO var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLp_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(Ml_1 var1, float var2, rjV_2 var3) {
+      for (C_case var5 : C_throws.id_class().id_case()) {
+         var5.s().id_class(new T(var2, var1, var3));
+      }
+   }
+
+   public void id_class(rrAK var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLx_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLO var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrFi_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(ruS_2<?> var1, rum_3 var2) {
+      if (var2 == rum_3.CLIENTBOUND) {
+         for (C_case var4 : C_throws.id_class().id_case()) {
+            if (var4.id_throw().id_catch() != null
+               && ((Aq_1)var4.id_throw().id_catch().id_break[0]).id_class() == ((Aq_1)((cb_3)id_import.id_class[57]).id_break[0]).id_class()) {
+               var4.s()
+                  .id_break(new y_1(((Aq_1)((cb_3)id_import.id_class[57]).id_break[0]).id_class(), (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[1], var1));
+            }
+         }
+      }
+   }
+
+   public void id_class(rrFe_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class() {
+      for (C_case var2 : C_throws.id_class().id_case()) {
+         cb_3 var3 = var2.id_throw().id_catch();
+         if (var3 != null && (Aq_1)var3.id_break[0] == (Aq_1)((cb_3)id_import.id_class[57]).id_break[0]) {
+            var2.s().id_volatile();
+         }
+      }
+   }
+
+   public void id_class(rrAZ var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(t_1 var1) {
+      C_case var2 = C_throws.id_class().id_private();
+      if (var2 != null) {
+         var2.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAS var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrFK var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAo_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAc_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public boolean id_class(vm_3 var1) {
+      return (!C_throws.id_class().id_break().id_this().id_catch() || (cb_3)id_import.id_class[57] == null) && !var1.id_continue
+         ? booleansf9703d96375232b196815afd59d1eb48[16]
+         : booleansf9703d96375232b196815afd59d1eb48[15];
+   }
+
+   public void id_class(rrLv_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public boolean id_class(cW_2 var1) {
+      Lu_1 var2 = var1.id_byte();
+      String var3 = var2.id_private();
+      String var4 = var3.substring(0, Math.min(var3.length(), var2.id_final()));
+      f_1 var5 = new f_1(var4);
+      C_throws.id_class().id_break().s().id_class(var5);
+      if (var5.id_byte()) {
+         return false;
+      } else if ((String[])var5.id_class[1] != null) {
+         var5.id_break();
+         var1.id_class(null);
+         if (var1.id_case()) {
+            return false;
+         } else {
+            var2.id_byte(null);
+            var1.id_class(null);
+            var1.id_throws().clear();
+            if (((String[])var5.id_class[1]).length == 0) {
+               var1.id_class(Suggestions.empty());
+            } else {
+               StringRange var6 = StringRange.between(var4.lastIndexOf(" ") + 1, var4.length());
+               List var7 = Stream.<String>of((String[])var5.id_class[1]).map(var1x -> new Suggestion(var6, var1x)).collect(Collectors.toList());
+               Suggestions var8 = new Suggestions(var6, var7);
+               var1.id_class(new CompletableFuture<>());
+               var1.id_protected().complete(var8);
+            }
+
+            var1.id_break(true);
+            return false;
+         }
+      } else {
+         return booleansf9703d96375232b196815afd59d1eb48[14];
+      }
+   }
+
+   public void id_class(rrLU var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(an_3 var1) {
+      Float var7 = (Float)var1.id_throws[15];
+      var1.id_throws[72] = var7;
+      if (cb_3.class.isInstance(var1) && C_throws.id_class().id_private() != null) {
+         t_1 var2 = ((t_1)t_1.id_class[0]).id_break((w_1)w_1.staticFieldsa114f317008a3fe78339d2b3c5e6fe39[0]);
+         Float var8 = var2.id_class().id_throws();
+         var1.id_throws[15] = var8;
+      }
+   }
+
+   public void id_class(rrFo_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLz_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAT var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLV var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLs_1 var1) {
+      if ((cb_3)id_import.id_class[57] != null && (gm_3)id_import.id_class[56] != null) {
+         for (C_case var3 : C_throws.id_class().id_case()) {
+            var3.s().id_class(var1);
+         }
+      }
+   }
+
+   public void id_class(PacketEvent var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAX var1) {
+      C_case var2 = C_throws.id_class().id_private();
+      if (var2 != null) {
+         var2.s().id_class(var1);
+      }
+   }
+
+   public void id_class(gm_3 var1) {
+      C_throws.id_class().id_break().s().id_class(new g_1(var1, (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[1]));
+   }
+
+   public void id_class(rrAM var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrnG_2 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rFZ var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         cb_3 var4 = var3.id_throw().id_catch();
+         if (var4 != null && (Aq_1)var4.id_break[0] == (Aq_1)((cb_3)id_import.id_class[57]).id_break[0]) {
+            l_1 var5 = new l_1(
+               (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[0], (H)H.staticFields1fafa9bf76ed3352892023b88da3732d[1], var1.id_break(), var1.id_byte()
+            );
+            var3.s().id_class(var5);
+         }
+      }
+   }
+
+   public void id_class(rrLa_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrLh_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrAl_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrFf_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_class(rrFw_1 var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         var3.s().id_class(var1);
+      }
+   }
+
+   public void id_break(ruS_2<?> var1, rum_3 var2) {
+      if (var2 == rum_3.CLIENTBOUND) {
+         for (C_case var4 : C_throws.id_class().id_case()) {
+            if (var4.id_throw().id_catch() != null
+               && ((Aq_1)var4.id_throw().id_catch().id_break[0]).id_class() == ((Aq_1)((cb_3)id_import.id_class[57]).id_break[0]).id_class()) {
+               var4.s()
+                  .id_class(new y_1(((Aq_1)((cb_3)id_import.id_class[57]).id_break[0]).id_class(), (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[0], var1));
+            }
+         }
+      }
+   }
+
+   public void id_break() {
+      C_case var1 = C_throws.id_class().id_private();
+      if (var1 != null) {
+         ((Br_1)var1.id_catch()).id_throws();
+      }
+   }
+
+   public boolean id_break(String var1) {
+      C var2 = new C(var1);
+      C_case var3 = C_throws.id_class().id_private();
+      if (var3 == null) {
+         return false;
+      } else {
+         var3.s().id_class(var2);
+         return var2.id_byte();
+      }
+   }
+
+   public void id_break(gm_3 var1) {
+      if ((gm_3)id_import.id_class[56] != null || var1 != null) {
+         C_throws.id_class().id_break().s().id_class(new g_1(var1, (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[0]));
+         ((rrQX)rrQX.staticFields09f1f28026cd378cb9df490a64ac8f2a[0]).id_finally().id_class(rrnu_3.id_class(var1));
+      }
+   }
+
+   public void id_break(rFZ var1) {
+      for (C_case var3 : C_throws.id_class().id_case()) {
+         cb_3 var4 = var3.id_throw().id_catch();
+         if (var4 != null && (Aq_1)var4.id_break[0] == (Aq_1)((cb_3)id_import.id_class[57]).id_break[0]) {
+            l_1 var5 = new l_1(
+               (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[1], (H)H.staticFields1fafa9bf76ed3352892023b88da3732d[1], var1.id_break(), var1.id_byte()
+            );
+            var3.s().id_class(var5);
+         }
+      }
+   }
+
+   private static void id_throws() {
+      Object[] var0 = new Object[]{new C_break(), null};
+      var0[1] = new C_break[]{(C_break)var0[0]};
+      staticFieldsf9703d96375232b196815afd59d1eb48 = var0;
+   }
+
+   private static void id_catch() {
+      shortsf9703d96375232b196815afd59d1eb48 = new short[]{
+         1,
+         0,
+         0,
+         57,
+         0,
+         1,
+         2,
+         3,
+         0,
+         57,
+         0,
+         0,
+         1,
+         0,
+         57,
+         0,
+         1,
+         1,
+         0,
+         0,
+         0,
+         57,
+         0,
+         1,
+         2,
+         0,
+         0,
+         57,
+         0,
+         1,
+         2,
+         0,
+         57,
+         0,
+         1,
+         1,
+         1,
+         15,
+         72,
+         0,
+         0,
+         15,
+         0,
+         0,
+         0,
+         1,
+         0,
+         0,
+         56,
+         0,
+         0,
+         1,
+         57,
+         0,
+         57,
+         0,
+         57,
+         0,
+         0,
+         0,
+         57,
+         0,
+         57,
+         0,
+         1,
+         0,
+         57,
+         0,
+         57,
+         0,
+         0,
+         0,
+         57,
+         0,
+         57,
+         0,
+         1,
+         57,
+         56,
+         0,
+         0
+      };
+   }
+
+   private static void id_implements() {
+      booleansf9703d96375232b196815afd59d1eb48 = new boolean[]{
+         true,
+         false,
+         false,
+         false,
+         true,
+         false,
+         false,
+         false,
+         false,
+         false,
+         false,
+         true,
+         true,
+         false,
+         true,
+         true,
+         false,
+         false,
+         true,
+         false,
+         false,
+         false,
+         true
+      };
+   }
+
+   private static void id_protected() {
+      bytesf9703d96375232b196815afd59d1eb48 = new byte[]{4, 4, 2};
+   }
+
+   public void id_protected(ruS_2<?> var1, rum_3 var2) {
+      if (var2 == rum_3.CLIENTBOUND) {
+         for (C_case var4 : C_throws.id_class().id_case()) {
+            if (var4.id_throw().id_catch() != null
+               && ((Aq_1)var4.id_throw().id_catch().id_break[0]).id_class() == ((Aq_1)((cb_3)id_import.id_class[57]).id_break[0]).id_class()) {
+               var4.s()
+                  .id_class(new y_1(((Aq_1)((cb_3)id_import.id_class[57]).id_break[0]).id_class(), (Y)Y.staticFields22c81230f53b33f2a682b4198db24cc4[1], var1));
+            }
+         }
+      }
+   }
+
+   private static void id_private() {
+      stringsf9703d96375232b196815afd59d1eb48 = new String[]{new String(" "), new String("INSTANCE")};
+   }
+}

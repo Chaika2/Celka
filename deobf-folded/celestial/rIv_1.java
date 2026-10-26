@@ -1,0 +1,25 @@
+package celestial;
+
+import com.mojang.datafixers.DSL;
+import com.mojang.datafixers.Typed;
+import com.mojang.datafixers.schemas.Schema;
+import java.util.Optional;
+
+public class rIv_1 extends rwW_2 {
+   public rIv_1(Schema var1, boolean var2) {
+      super(var1, var2, "Zombie Villager XP rebuild", rTC.id_int, "minecraft:zombie_villager");
+   }
+
+   @Override
+   protected Typed<?> id_class(Typed<?> var1) {
+      return var1.update(DSL.remainderFinder(), var0 -> {
+         Optional var1x = var0.get("Xp").asNumber().result();
+         if (!var1x.isPresent()) {
+            int var2 = var0.get("VillagerData").get("level").asInt(1);
+            return var0.set("Xp", var0.createInt(rIk_1.id_class(var2)));
+         } else {
+            return var0;
+         }
+      });
+   }
+}

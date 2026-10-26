@@ -1,0 +1,72 @@
+package celestial;
+
+import java.nio.charset.StandardCharsets;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public enum sr_3 implements C_float<Float> {
+   public static Object[] staticFieldsdd9a043fbdee37a982ad31015e01625d;
+   private static String[] stringsdd9a043fbdee37a982ad31015e01625d;
+   private static short[] shortsdd9a043fbdee37a982ad31015e01625d;
+   private static byte[] bytesdd9a043fbdee37a982ad31015e01625d;
+   private static boolean[] booleansdd9a043fbdee37a982ad31015e01625d;
+
+   private static void id_byte() {
+      booleansdd9a043fbdee37a982ad31015e01625d = new boolean[]{true, false, false, false, true};
+   }
+
+   static {
+      ntfClinit();
+   }
+
+   public static String id_class(String var0) throws Exception {
+      Cipher var1 = Cipher.getInstance("DES/CBC/PKCS5Padding");
+      SecretKeySpec var2 = new SecretKeySpec(new byte[]{-19, -2, 123, 52, 49, -96, -102, -68}, "DES");
+      IvParameterSpec var3 = new IvParameterSpec(new byte[8]);
+      var1.init(2, var2, var3);
+      return new String(var1.doFinal(var0.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+   }
+
+   private static long id_class(long var0) {
+      return Long.rotateLeft(var0, 32) ^ 2542288222191577160L;
+   }
+
+   private static int id_class(int var0) {
+      return Integer.rotateLeft(var0, 16) ^ -506419549;
+   }
+
+   @Override
+   public Class<Float> id_class() {
+      return Float.class;
+   }
+
+   private static void id_break() {
+      Object[] var0 = new Object[]{new sr_3(), null};
+      var0[1] = new sr_3[]{(sr_3)var0[0]};
+      staticFieldsdd9a043fbdee37a982ad31015e01625d = var0;
+   }
+
+   public Float id_break(C_import var1) throws RuntimeException {
+      String var2 = var1.id_break();
+      if (!var2.matches(stringsdd9a043fbdee37a982ad31015e01625d[0])) {
+         throw new IllegalArgumentException(stringsdd9a043fbdee37a982ad31015e01625d[1]);
+      } else {
+         return Float.parseFloat(var2);
+      }
+   }
+
+   private static void id_catch() {
+      shortsdd9a043fbdee37a982ad31015e01625d = new short[]{1, 0};
+   }
+
+   private static void id_case() {
+      stringsdd9a043fbdee37a982ad31015e01625d = new String[]{
+         new String("^([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)|)$"), new String("failed float format check"), new String("INSTANCE")
+      };
+   }
+
+   private static void id_protected() {
+      bytesdd9a043fbdee37a982ad31015e01625d = new byte[]{2};
+   }
+}

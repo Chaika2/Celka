@@ -1,0 +1,113 @@
+package celestial;
+
+import org.apache.commons.lang3.mutable.MutableInt;
+
+public final class rrsH_2 extends rrsV_2<rrsp_3, rrsy_3> {
+   private static final rpr_3[] id_throws = rpr_3.values();
+   private final rfw_3 id_case = new rfw_3();
+
+   public rrsH_2(rol_3 var1) {
+      super(var1, rRo_1.BLOCK, new rrsy_3(var1));
+   }
+
+   @Override
+   public void id_class(rfH_2 var1, int var2) {
+      this.id_byte.id_throws();
+      this.id_class(Long.MAX_VALUE, var1.id_package(), 15 - var2, true);
+   }
+
+   @Override
+   protected void id_class(long var1, int var3, boolean var4) {
+      long var5 = rjh_3.id_throws(var1);
+
+      for (rpr_3 var10 : id_throws) {
+         long var11 = rfH_2.id_class(var1, var10);
+         long var13 = rjh_3.id_throws(var11);
+         if (var5 == var13 || this.id_byte.id_catch(var13)) {
+            this.id_break(var1, var11, var3, var4);
+         }
+      }
+   }
+
+   @Override
+   protected int id_class(long var1, long var3, int var5) {
+      int var6 = var5;
+      if (Long.MAX_VALUE != var3) {
+         int var7 = this.id_break(Long.MAX_VALUE, var1, 0);
+         if (var5 > var7) {
+            var6 = var7;
+         }
+
+         if (var6 == 0) {
+            return var6;
+         }
+      }
+
+      long var20 = rjh_3.id_throws(var1);
+      roH_2 var9 = this.id_byte.id_class(var20, true);
+
+      for (rpr_3 var13 : id_throws) {
+         long var14 = rfH_2.id_class(var1, var13);
+         if (var14 != var3) {
+            long var16 = rjh_3.id_throws(var14);
+            roH_2 var18;
+            if (var20 == var16) {
+               var18 = var9;
+            } else {
+               var18 = this.id_byte.id_class(var16, true);
+            }
+
+            if (var18 != null) {
+               int var19 = this.id_break(var14, var1, this.id_class(var18, var14));
+               if (var6 > var19) {
+                  var6 = var19;
+               }
+
+               if (var6 == 0) {
+                  return var6;
+               }
+            }
+         }
+      }
+
+      return var6;
+   }
+
+   @Override
+   protected int id_break(long var1, long var3, int var5) {
+      if (var3 == Long.MAX_VALUE) {
+         return 15;
+      } else if (var1 == Long.MAX_VALUE) {
+         return var5 + 15 - this.id_protected(var3);
+      } else if (var5 >= 15) {
+         return var5;
+      } else {
+         int var6 = Integer.signum(rfH_2.id_class(var3) - rfH_2.id_class(var1));
+         int var7 = Integer.signum(rfH_2.id_break(var3) - rfH_2.id_break(var1));
+         int var8 = Integer.signum(rfH_2.id_byte(var3) - rfH_2.id_byte(var1));
+         rpr_3 var9 = rpr_3.id_class(var6, var7, var8);
+         if (var9 == null) {
+            return 15;
+         } else {
+            MutableInt var10 = new MutableInt();
+            xc_3 var11 = this.id_class(var3, var10);
+            if (var10.getValue() >= 15) {
+               return 15;
+            } else {
+               xc_3 var12 = this.id_class(var1, (MutableInt)null);
+               rjC_2 var13 = this.id_class(var12, var1, var9);
+               rjC_2 var14 = this.id_class(var11, var3, var9.id_case());
+               return rjw_3.id_break(var13, var14) ? 15 : var5 + Math.max(1, var10.getValue());
+            }
+         }
+      }
+   }
+
+   private int id_protected(long var1) {
+      int var3 = rfH_2.id_class(var1);
+      int var4 = rfH_2.id_break(var1);
+      int var5 = rfH_2.id_byte(var1);
+      rRq_1 var6 = this.id_class.id_throws(var3 >> 4, var5 >> 4);
+      return var6 != null ? var6.id_catch(this.id_case.id_class(var3, var4, var5)) : 0;
+   }
+}

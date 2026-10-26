@@ -1,0 +1,147 @@
+/*
+ * Decompiled with CFR 0.152.
+ */
+package celestial;
+
+import celestial.C_break;
+import celestial.Om_1;
+import celestial.rdn_3;
+import celestial.rfH_2;
+import celestial.rpr_3;
+import celestial.rrLq_1;
+import celestial.rrQX;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+public class rrLp_1
+extends Om_1 {
+    private static byte[] id_byte;
+    private static boolean[] id_protected;
+    public static Object[] id_class;
+    private static short[] id_throws;
+    public Object[] id_break;
+
+    public rrLp_1() {
+        this.id_catch();
+    }
+
+    static {
+        rrLp_1.ntfClinit();
+    }
+
+    private static long id_class(long l) {
+        return Long.rotateLeft(l, 32) ^ 0x952EB4F2D1D970DL;
+    }
+
+    public static String id_class(String string) throws Exception {
+        Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+        SecretKeySpec secretKeySpec = new SecretKeySpec(new byte[]{-17, -119, -76, -98, -22, 7, -62, 51}, "DES");
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(new byte[8]);
+        cipher.init(2, (Key)secretKeySpec, ivParameterSpec);
+        return new String(cipher.doFinal(string.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.UTF_8);
+    }
+
+    public void id_class(int n) {
+        this.id_catch();
+        Integer n2 = n;
+        this.id_break[rrLp_1.id_throws[19]] = n2;
+    }
+
+    public static rrLp_1 id_class(rrLq_1 rrLq_12, rfH_2 rfH_22, rpr_3 rpr_32, rdn_3 rdn_32, int n) {
+        rrLp_1 rrLp_12 = rrLp_1.id_break(rrLq_12, rfH_22, rpr_32, rdn_32, n);
+        ((rrQX)rrQX.staticFields09f1f28026cd378cb9df490a64ac8f2a[id_throws[12]]).id_finally().id_class(rrLp_12);
+        ((C_break)C_break.staticFieldsf9703d96375232b196815afd59d1eb48[id_throws[13]]).id_class(rrLp_12);
+        return rrLp_12;
+    }
+
+    public rfH_2 id_class() {
+        this.id_catch();
+        return (rfH_2)this.id_break[id_throws[15]];
+    }
+
+    private static rrLp_1 id_break(rrLq_1 rrLq_12, rfH_2 rfH_22, rpr_3 rpr_32, rdn_3 rdn_32, int n) {
+        rrLq_1 rrLq_13 = rrLq_12;
+        ((rrLp_1)rrLp_1.id_class[rrLp_1.id_throws[0]]).id_break[rrLp_1.id_throws[1]] = rrLq_13;
+        rfH_2 rfH_23 = rfH_22;
+        ((rrLp_1)rrLp_1.id_class[rrLp_1.id_throws[2]]).id_break[rrLp_1.id_throws[3]] = rfH_23;
+        rpr_3 rpr_33 = rpr_32;
+        ((rrLp_1)rrLp_1.id_class[rrLp_1.id_throws[4]]).id_break[rrLp_1.id_throws[5]] = rpr_33;
+        rdn_3 rdn_33 = rdn_32;
+        ((rrLp_1)rrLp_1.id_class[rrLp_1.id_throws[6]]).id_break[rrLp_1.id_throws[7]] = rdn_33;
+        Integer n2 = n;
+        ((rrLp_1)rrLp_1.id_class[rrLp_1.id_throws[8]]).id_break[rrLp_1.id_throws[9]] = n2;
+        ((rrLp_1)id_class[id_throws[10]]).id_class(id_protected[0]);
+        return (rrLp_1)id_class[id_throws[11]];
+    }
+
+    private static int id_break(int n) {
+        return Integer.rotateLeft(n, 16) ^ 0xD48EC103;
+    }
+
+    public int id_break() {
+        this.id_catch();
+        return (Integer)this.id_break[id_throws[18]];
+    }
+
+    public rdn_3 id_throws() {
+        this.id_catch();
+        return (rdn_3)this.id_break[id_throws[17]];
+    }
+
+    private static /* synthetic */ void ntfClinit() {
+        rrLp_1.id_finally();
+        rrLp_1.id_extends();
+        rrLp_1.id_implements();
+        rrLp_1.id_private();
+    }
+
+    private static void id_finally() {
+        boolean[] blArray = new boolean[4];
+        blArray[3] = true;
+        id_protected = blArray;
+    }
+
+    private void id_catch() {
+        if (this.id_break == null) {
+            Object[] objectArray = this.id_break = new Object[id_byte[0]];
+            objectArray[rrLp_1.id_byte[1]] = id_protected[2];
+        }
+    }
+
+    private static void id_extends() {
+        short[] sArray = new short[20];
+        sArray[3] = 1;
+        sArray[5] = 2;
+        sArray[7] = 3;
+        sArray[9] = 4;
+        sArray[15] = 1;
+        sArray[16] = 2;
+        sArray[17] = 3;
+        sArray[18] = 4;
+        sArray[19] = 4;
+        id_throws = sArray;
+    }
+
+    public rrLq_1 id_case() {
+        this.id_catch();
+        return (rrLq_1)((Object)this.id_break[id_throws[14]]);
+    }
+
+    private static void id_implements() {
+        id_byte = new byte[]{5, 4};
+    }
+
+    public rpr_3 id_protected() {
+        this.id_catch();
+        return (rpr_3)this.id_break[id_throws[16]];
+    }
+
+    private static void id_private() {
+        Object[] objectArray = new Object[]{new rrLp_1()};
+        id_class = objectArray;
+    }
+}
+
