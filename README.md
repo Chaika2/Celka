@@ -25,7 +25,28 @@ GitHub в 100 МБ.
   (его скачивает CollapseLoader; jar не модифицируется, патчи подгружаются
   отдельным каталогом `celestial-fix`)
 
-## Сборка и запуск
+## Как запустить
+
+**Вариант 1 — готовый лаунчер (ничего устанавливать не нужно).**
+Готовая сборка лежит не в репозитории, а в разделе **Releases**:
+`https://github.com/<ник>/Celestial-Sources/releases/latest`
+
+Скачать `CelestialLauncher-windows-x64.zip`, распаковать в любое место и запустить
+`CelestialLauncher\CelestialLauncher.exe`. Внутри уже есть собственная Java, так
+что установленный JDK не нужен. Клиентские библиотеки лаунчер при первом запуске
+скачивает сам в `%APPDATA%\CollapseLoader\celestial-libraries`.
+
+Почему так: app-image весит ~130 МБ (в нём JDK-рантайм), а GitHub не принимает
+в репозиторий файлы больше 100 МБ — зато в Releases лимит 2 ГБ на файл.
+
+**Вариант 2 — из исходников (нужен JDK 21).**
+
+```powershell
+.\build.cmd     # соберёт build\launcher-app\CelestialLauncher\CelestialLauncher.exe + zip
+.\run.cmd       # или сразу запустить лаунчер без упаковки
+```
+
+## Сборка
 
 ```powershell
 .\gradlew prepareAq1Fix prepareShieldBreakFix   # патч-классы в build/celestial-fix и run/celestial-fix
