@@ -19,7 +19,7 @@ bobViewEffect:0.30000001192092896
 toggleCrouch:false
 toggleSprint:false
 mouseSensitivity:0.5
-fov:1.0
+fov:0.975
 fovEffectScale:1.0
 gamma:100.0
 autoBuyRefreshDelay:0.0
@@ -104,7 +104,7 @@ key_key.hotbar.7:key.keyboard.7
 key_key.hotbar.8:key.keyboard.8
 key_key.hotbar.9:key.keyboard.9
 key_of.key.zoom:key.keyboard.c
-soundCategory_master:0.08774834
+soundCategory_master:0.19701986
 soundCategory_music:0.16901408
 soundCategory_record:0.36267605
 soundCategory_weather:1.0

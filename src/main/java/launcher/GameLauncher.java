@@ -45,11 +45,15 @@ public final class GameLauncher {
 
         log.accept("[launcher] Ник: " + username);
         log.accept("[launcher] Папка игры: " + gameDir.getAbsolutePath());
-        log.accept("[launcher] Ресурсы: " + assetsDir.getAbsolutePath()
-            + (hasAssets(assetsDir) ? "" : "  (ВНИМАНИЕ: indexes/1.16.json не найден)"));
         log.accept("[launcher] Нативные библиотеки: " + nativesDir.getAbsolutePath());
         File fix = fixDir(gameDir);
         log.accept("[launcher] Патч клиента: " + (fix == null ? "не найден" : fix.getAbsolutePath()));
+
+        // Sounds, languages and sounds.json are not inside the client jar. On a
+        // clean machine they have to be fetched once from the Mojang CDN.
+        AssetProvisioner.ensureAssets(assetsDir, log);
+        log.accept("[launcher] Ресурсы: " + assetsDir.getAbsolutePath()
+            + (hasAssets(assetsDir) ? "" : "  (ВНИМАНИЕ: indexes/1.16.json не найден)"));
         log.accept("[launcher] Запуск клиента...");
 
         List<String> command = buildCommand(username, gameDir, assetsDir, nativesDir);

@@ -19,6 +19,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HexFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -32,23 +36,33 @@ public final class Main {
 
     public static void main(String[] args) throws Throwable {
         File sourceJar = sourceJar();
+        File appHome = appHome(sourceJar);
         File root = resolveCollapseLoaderRoot(sourceJar);
-        configureNativeLibraries(root);
-        File libraries = new File(root, "celestial-libraries");
 
-        ensureLibraries(root, libraries);
-
-        List<URL> classpath = new ArrayList<>();
-        File[] files = libraries.listFiles((dir, name) -> name.toLowerCase().endsWith(".jar"));
-        if (files != null) {
-            java.util.Arrays.sort(files, Comparator.comparing(File::getName));
-            for (File file : files) {
-                classpath.add(file.toURI().toURL());
+        // The packaged launcher ships the complete runtime inside the app-image
+        // (app/celestial-libraries/celestial-client-remapped.jar plus the jars
+        // next to it). Use that copy when present: it makes the launcher fully
+        // offline and avoids the HuggingFace download that times out on some
+        // networks. Only a real CollapseLoader installation falls back to the
+        // CDN path below.
+        List<File> libraryJars = bundledLibraryJars(appHome);
+        if (libraryJars.isEmpty()) {
+            configureNativeLibraries(root);
+            File libraries = new File(root, "celestial-libraries");
+            ensureLibraries(root, libraries);
+            libraryJars = jarsIn(libraries);
+            if (libraryJars.isEmpty()) {
+                throw new IOException("Celestial libraries folder contains no JAR files: " + libraries);
             }
+        } else {
+            configureNativeLibraries(appHome, root);
+            System.out.println("Celestial libraries: bundled " + libraryJars.size()
+                + " JARs from " + appHome.getAbsolutePath());
         }
 
-        if (classpath.isEmpty()) {
-            throw new IOException("Celestial libraries folder contains no JAR files: " + libraries);
+        List<URL> classpath = new ArrayList<>();
+        for (File file : libraryJars) {
+            classpath.add(file.toURI().toURL());
         }
 
         File aq1Fix = resolveAq1FixDir();
@@ -133,10 +147,117 @@ public final class Main {
         if (cs != null) {
             java.net.URL loc = cs.getLocation();
             if (loc != null) {
-                return new File(loc.toURI()).getAbsoluteFile();
+                File located = new File(loc.toURI()).getAbsoluteFile();
+                if (located.exists()) {
+                    return located;
+                }
             }
         }
+
+        // The game bootstrap is copied into the client's own classloader
+        // (celestial.rrzu_3 defines it manually), so its CodeSource can be
+        // null. The launcher JAR is always on the class path, use it instead.
+        File launcher = findOnClassPath("celestial-launcher.jar");
+        if (launcher != null) {
+            return launcher;
+        }
         return new File(System.getProperty("user.dir", ".")).getAbsoluteFile();
+    }
+
+    private static File findOnClassPath(String fileName) {
+        String classPath = System.getProperty("java.class.path", "");
+        for (String entry : classPath.split(Pattern.quote(File.pathSeparator))) {
+            if (entry.isBlank()) {
+                continue;
+            }
+            File file = new File(entry);
+            if (file.isFile() && file.getName().equalsIgnoreCase(fileName)) {
+                return file.getAbsoluteFile();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Directory of a self-contained launcher (the jpackage app-image), or
+     * {@code null} for a Gradle run / CollapseLoader installation.
+     */
+    private static File appHome(File sourceJar) {
+        if (sourceJar != null && sourceJar.isFile() && sourceJar.getParentFile() != null) {
+            File directory = sourceJar.getParentFile();
+            if (isStandaloneApp(directory)) {
+                return directory;
+            }
+        }
+
+        File launcher = findOnClassPath("celestial-launcher.jar");
+        if (launcher != null && launcher.getParentFile() != null
+            && isStandaloneApp(launcher.getParentFile())) {
+            return launcher.getParentFile();
+        }
+
+        // The game working directory is <app>/run inside the packaged launcher.
+        File current = new File(System.getProperty("user.dir", ".")).getAbsoluteFile();
+        for (int i = 0; i < 4 && current != null; i++) {
+            if (isStandaloneApp(current)) {
+                return current;
+            }
+            current = current.getParentFile();
+        }
+        return null;
+    }
+
+    private static boolean isStandaloneApp(File directory) {
+        if (directory == null) {
+            return false;
+        }
+        return new File(directory, "celestial-client-app.jar").isFile()
+            || new File(directory, "celestial-libraries/celestial-client-remapped.jar").isFile();
+    }
+
+    /**
+     * JARs to feed into the nested game classloader when the launcher ships
+     * its runtime. The launcher JAR itself is excluded: it contains this
+     * bootstrap class and the loader is asked to find the real
+     * {@code net.minecraft.client.main.Main} in the client JAR.
+     */
+    private static List<File> bundledLibraryJars(File appHome) {
+        if (appHome == null) {
+            return List.of();
+        }
+
+        File librariesDir = new File(appHome, "celestial-libraries");
+        if (!new File(librariesDir, "celestial-client-remapped.jar").isFile()) {
+            return List.of();
+        }
+
+        Map<String, File> byName = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        for (File jar : jarsIn(librariesDir)) {
+            byName.putIfAbsent(jar.getName(), jar);
+        }
+        for (File jar : jarsIn(appHome)) {
+            String name = jar.getName().toLowerCase(Locale.ROOT);
+            if (name.equals("celestial-launcher.jar") || name.equals("celestial-client-app.jar")) {
+                continue;
+            }
+            byName.putIfAbsent(jar.getName(), jar);
+        }
+        return new ArrayList<>(byName.values());
+    }
+
+    private static List<File> jarsIn(File directory) {
+        List<File> result = new ArrayList<>();
+        File[] files = directory == null ? null : directory.listFiles(
+            (dir, name) -> name.toLowerCase(Locale.ROOT).endsWith(".jar"));
+        if (files != null) {
+            java.util.Arrays.sort(files, Comparator.comparing(File::getName));
+            for (File file : files) {
+                if (file.isFile()) {
+                    result.add(file);
+                }
+            }
+        }
+        return result;
     }
 
     private static File resolveCollapseLoaderRoot(File sourceJar) {
@@ -173,18 +294,32 @@ public final class Main {
     }
 
     private static void configureNativeLibraries(File root) {
+        configureNativeLibraries(null, root);
+    }
+
+    private static void configureNativeLibraries(File appHome, File root) {
         String os = System.getProperty("os.name", "").toLowerCase();
+        List<File> roots = new ArrayList<>();
+        if (appHome != null) {
+            roots.add(appHome);
+        }
+        if (root != null && !root.equals(appHome)) {
+            roots.add(root);
+        }
+
         List<File> candidates = new ArrayList<>();
-        if (os.contains("win")) {
-            candidates.add(new File(root, "natives-windows"));
-            candidates.add(new File(root, "natives"));
-        } else if (os.contains("mac")) {
-            candidates.add(new File(root, "natives-macos"));
-            candidates.add(new File(root, "natives-macos-arm64"));
-            candidates.add(new File(root, "natives"));
-        } else {
-            candidates.add(new File(root, "natives-linux"));
-            candidates.add(new File(root, "natives"));
+        for (File base : roots) {
+            if (os.contains("win")) {
+                candidates.add(new File(base, "natives-windows"));
+                candidates.add(new File(base, "natives"));
+            } else if (os.contains("mac")) {
+                candidates.add(new File(base, "natives-macos"));
+                candidates.add(new File(base, "natives-macos-arm64"));
+                candidates.add(new File(base, "natives"));
+            } else {
+                candidates.add(new File(base, "natives-linux"));
+                candidates.add(new File(base, "natives"));
+            }
         }
 
         String configured = System.getProperty("java.library.path");

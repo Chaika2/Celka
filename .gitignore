@@ -15,6 +15,7 @@ out/
 # run/packetdebug.log alone is ~600 MB; GitHub rejects files above 100 MB.
 # ---------------------------------------------------------------------------
 *.log
+*.log.gz
 hs_err_pid*
 replay_pid*
 

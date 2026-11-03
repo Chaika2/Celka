@@ -19,6 +19,12 @@ client log visible in the same window.
 `prepareShieldBreakFix`, so the patched classes in `run/celestial-fix` are
 always up to date before the game starts.
 
+`packageLauncher` and `launcherZip` additionally need
+`runtime/celestial-client-runtime.jar` (see [Game runtime](#game-runtime)).
+It is the flat-name client jar the game actually loads; the remapped jar in
+`libs/` is only used to compile the launcher itself and cannot be used at
+runtime.
+
 ## Nickname
 
 The field accepts 1–16 characters: Latin letters, digits and `_`. The value is
@@ -62,17 +68,46 @@ Details:
   responsive and keeps streaming the log. Closing the launcher window does not
   stop the game.
 * **Paths are resolved automatically**:
-  * game directory: `<project>/run` (created if missing);
+  * game directory: `<project>/run` (created if missing); inside the
+    jpackage app-image it is `<image>/app/run`;
   * assets: `run/assets` if it has `indexes/1.16.json`, otherwise
     `../Celestial/assets`, `C:/Celestial/assets`, `.minecraft/assets`,
-    `CollapseLoader/assets`;
-  * natives: `<project>/natives`, then `CollapseLoader/natives-windows`,
-    `CollapseLoader/natives`;
-  * patched classes: `<gameDir>/celestial-fix` or `<project>/build/celestial-fix`.
+    `CollapseLoader/assets`; if none of them has an index, `run/assets` is
+    used and populated by the provisioner below;
+  * natives: `<image>/app/natives`, `<project>/natives`, then
+    `CollapseLoader/natives-windows`, `CollapseLoader/natives`;
+  * patched classes: `<image>/app/celestial-fix`, `<gameDir>/celestial-fix` or
+    `<project>/build/celestial-fix`.
   * `-Dcelestial.aq1fix` is passed explicitly so the patch is found regardless
     of the working directory.
 * **Log**: stdout/stderr of the child process (merged) is shown in the window
   and the exit code is reported when the game closes.
+
+## Minecraft assets (sounds, languages)
+
+The client jar only contains code and a handful of textures: vanilla sounds,
+translations and `sounds.json` live in the asset index. On a clean machine the
+game would start completely silent.
+
+`launcher.AssetProvisioner` fixes that before the game starts:
+
+1. if `assets/indexes/1.16.json` is missing, the index bundled in
+   `celestial-launcher.jar` (`assets/indexes/1.16.json`) is extracted;
+2. every indexed object is checked for existence and exact size in
+   `assets/objects/<first two hash chars>/<hash>`;
+3. the missing ones are downloaded from
+   `https://resources.download.minecraft.net/` (8 threads, 4 attempts per
+   file, progress logged every 100 files), written to a `.tmp` file and moved
+   into place only after the size matches.
+
+The full index has 2615 objects (~320 MB), dominated by sounds (~253 MB) and
+translations (~49 MB). `en_us.json` is intentionally absent from the official
+index — the client loads its English strings from
+`assets/minecraft/celestial/lang/en_us.json` inside the jar.
+
+Download failures never abort the launch: the log shows a warning, the game
+still starts (possibly without some sounds), and the next start resumes the
+download because already-present objects are skipped.
 
 ## Files
 
@@ -80,8 +115,10 @@ Details:
   nickname validation/persistence, log view.
 * `src/main/java/launcher/GameLauncher.java` — command construction, path
   discovery, child process + log pump.
-* `build.gradle` — `application { mainClass = 'launcher.CelestialLauncher' }`
-  and the `launcher` task.
+* `src/main/java/launcher/AssetProvisioner.java` — bundled asset index,
+  missing-object detection and download from the Mojang CDN.
+* `build.gradle` — `application { mainClass = 'launcher.CelestialLauncher' }`,
+  the `launcher` task, and the jpackage/image packaging tasks.
 
 `offline.launcher.OfflineLauncher` is still the game entry point and is still
 used unchanged; the launcher only calls it with explicit arguments (when
@@ -97,10 +134,13 @@ build/launcher-app/CelestialLauncher/
 ├── app/
 │   ├── CelestialLauncher.cfg  <- classpath + main class
 │   ├── celestial-launcher.jar <- launcher classes (first on the classpath)
-│   ├── celestial-client-app.jar
-│   ├── *.jar                  <- every client library from libs/
+│   ├── celestial-client-app.jar <- client resources (no Main.class)
+│   ├── *.jar                  <- every client library from libs/ + assets
+│   ├── celestial-libraries/
+│   │   └── celestial-client-remapped.jar <- game runtime (flat celestial.*)
 │   ├── natives/               <- LWJGL/JNA natives
-│   └── celestial-fix/         <- patched celestial/*.class (Aq_1 + rrnD_2)
+│   ├── celestial-fix/         <- patched celestial/*.class (Aq_1 + rrnD_2)
+│   └── run/                   <- created on first launch: configs, worlds, assets/
 └── runtime/                   <- bundled Java 21 (all modules) + java.exe
 ```
 
@@ -120,13 +160,50 @@ Notes:
 * `celestial-launcher.jar` is listed first in `app.classpath` and
   `net/minecraft/client/main/Main.class` is stripped from both client jars, so
   the launcher bootstrap (`offline.launcher.OfflineLauncher`) always wins.
+* `app/celestial-libraries` is copied **after** jpackage runs, so it is not in
+  `CelestialLauncher.cfg` and does not leak into the launcher's own classpath.
+  `net.minecraft.client.main.Main` builds a nested classloader from it
+  (see [Game runtime](#game-runtime)).
 * The game directory and assets are **not** bundled: `run/` is created next to
-  the launcher (or the project), and assets are found in `run/assets`,
+  the launcher (or the project), assets are found in `run/assets`,
   `../Celestial/assets`, `C:/Celestial/assets`, `.minecraft/assets` or
-  `CollapseLoader/assets`.
+  `CollapseLoader/assets`, and `AssetProvisioner` downloads whatever is missing
+  into `run/assets`.
 * A WiX-less machine cannot build an *installer*; `app-image` is used instead.
   It is fully portable: copy the whole `CelestialLauncher` folder (or unzip
   `CelestialLauncher-windows-x64.zip`) anywhere and run the `.exe`.
+* Use `-PlauncherAppDir=<name>` to build into `build/<name>` when an already
+  running launcher holds files in `build/launcher-app` (Windows locks the
+  `.exe` and the bundled runtime).
+
+## Game runtime
+
+The game is not started from `libs/celestial-client-remapped.jar`. That jar is
+remapped (`celestial.setting.Setting`, `celestial.rrNd_1.id_class(...)`) and is
+only used to compile the launcher and the patches.
+
+The runtime the game loads is `runtime/celestial-client-runtime.jar`: the
+client jar with flat names (`celestial.Setting`), exactly what the patched
+classes in `celestial-fix` were compiled against. `packageLauncher` copies it
+to `app/celestial-libraries/celestial-client-remapped.jar` and fails with a
+hint if the file is missing.
+
+`Main` picks it up like this:
+
+1. `appHome()` finds the app-image directory (`app/`) by checking that
+   `app/celestial-client-app.jar` or
+   `app/celestial-libraries/celestial-client-remapped.jar` exists;
+2. `bundledLibraryJars()` returns every jar in `app/celestial-libraries` plus
+   the library jars in `app/`, excluding `celestial-launcher.jar` and
+   `celestial-client-app.jar`;
+3. the real `Main` is loaded from that jar in a nested `URLClassLoader`, and
+   natives are taken from `app/natives`.
+
+If no bundled runtime is found (a real CollapseLoader installation or a Gradle
+run), the legacy path is used: `%APPDATA%/CollapseLoader/celestial-libraries`,
+downloading it from the Collapse CDN if absent. The packaged launcher never
+needs that download, which is why it works on networks where the CDN times
+out.
 
 Command-line switches (handy for shortcuts and for smoke tests):
 

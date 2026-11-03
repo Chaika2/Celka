@@ -524,8 +524,34 @@ tasks.register('packageLauncher', Exec) {
             throw new GradleException("java launcher missing in the app-image runtime: ${childJava}")
         }
 
+        // Self-contained game runtime. net.minecraft.client.main.Main builds
+        // the nested game classloader from app/celestial-libraries, so the
+        // untouched client jar (with the real Main.class) is shipped there.
+        // It is copied after jpackage so it is NOT added to the launcher's own
+        // class path: the bootstrap Main from celestial-launcher.jar must keep
+        // winning in the outer JVM.
+        //
+        // This must be the *runtime* jar (flat celestial.* names), not the
+        // remapped libs/ jar: build/celestial-fix classes are compiled against
+        // it, and mixing the two namespaces crashes with NoSuchMethodError
+        // (celestial.setting.Setting vs celestial.Setting).
+        def runtimeJar = file('runtime/celestial-client-runtime.jar')
+        if (!runtimeJar.isFile()) {
+            throw new GradleException(
+                "Missing ${runtimeJar}. Copy %APPDATA%/CollapseLoader/celestial-libraries/" +
+                "celestial-client-remapped.jar there before packaging.")
+        }
+        def bundledLibraries = new File(appImage, 'app/celestial-libraries')
+        bundledLibraries.mkdirs()
+        copy {
+            from runtimeJar
+            into bundledLibraries
+            rename { 'celestial-client-remapped.jar' }
+        }
+
         println "[jpackage] Launcher: ${exe.absolutePath} (exists: ${exe.isFile()})"
         println "[jpackage] Child JVM: ${childJava.absolutePath}"
+        println "[jpackage] Bundled game runtime: ${bundledLibraries.absolutePath}"
     }
 }
 
