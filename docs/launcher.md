@@ -175,6 +175,11 @@ Notes:
 * Use `-PlauncherAppDir=<name>` to build into `build/<name>` when an already
   running launcher holds files in `build/launcher-app` (Windows locks the
   `.exe` and the bundled runtime).
+* Rebuilding an existing image preserves player data: if
+  `<image>/app/run` exists, `packageLauncher` copies it to
+  `build/<appDir>-run-backup`, rebuilds the image, then restores it (and only
+  then deletes the backup). Worlds, configs and the asset cache survive
+  `gradlew packageLauncher`; a failed build leaves the backup in place.
 
 ## Game runtime
 

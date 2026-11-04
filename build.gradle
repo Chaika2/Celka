@@ -463,7 +463,22 @@ tasks.register('packageLauncher', Exec) {
     def inputDir = layout.buildDirectory.dir('launcher-input').get().asFile
     def outputRoot = layout.buildDirectory.dir(project.findProperty('launcherAppDir') ?: 'launcher-app').get().asFile
 
+    // `run/` inside an existing app-image holds worlds, configs and the asset
+    // cache. A rebuild deletes the whole image, so keep a copy outside it and
+    // put it back afterwards. The backup is only removed after a successful
+    // restore, so a failed build cannot lose the data.
+    def runBackup = new File(outputRoot.parentFile, outputRoot.name + '-run-backup')
+    def currentRun = new File(outputRoot, 'CelestialLauncher/app/run')
+
     doFirst {
+        if (currentRun.isDirectory()) {
+            delete runBackup
+            copy {
+                from currentRun
+                into runBackup
+            }
+            println "[jpackage] Preserving ${currentRun.absolutePath} -> ${runBackup.absolutePath}"
+        }
         delete outputRoot
         outputRoot.mkdirs()
 
@@ -492,7 +507,7 @@ tasks.register('packageLauncher', Exec) {
             '--type', 'app-image',
             '--dest', outputRoot.absolutePath,
             '--name', 'CelestialLauncher',
-            '--app-version', '1.0.0',
+            '--app-version', '1.0.1',
             '--vendor', 'Celestial',
             '--description', 'Celestial Launcher (Beta 1.16.5)',
             '--input', inputDir.absolutePath,
@@ -552,6 +567,16 @@ tasks.register('packageLauncher', Exec) {
         println "[jpackage] Launcher: ${exe.absolutePath} (exists: ${exe.isFile()})"
         println "[jpackage] Child JVM: ${childJava.absolutePath}"
         println "[jpackage] Bundled game runtime: ${bundledLibraries.absolutePath}"
+
+        if (runBackup.isDirectory()) {
+            def restoredRun = new File(appImage, 'app/run')
+            copy {
+                from runBackup
+                into restoredRun
+            }
+            delete runBackup
+            println "[jpackage] Restored ${restoredRun.absolutePath}"
+        }
     }
 }
 
