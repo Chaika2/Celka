@@ -100,6 +100,7 @@ Java устанавливать не нужно — она уже внутри �
 | --- | --- |
 | `src/` | Исходники лаунчера, бутстрапа и патчей |
 | `shieldbreak-src/` | Shadow-классы `rrnD_2`, `rrwI_2` — фикс слома щита (`ByPass SB`) |
+| `client-patch-src/` | Патчи `UserInfo` (ник и случайный UID в WaterMark) и `BE` (без автозапуска ссылок) |
 | `packettap-src/` | Перехватчик пакетов для отладки |
 | `deobf/`, `deobf-final/` | Декомпилированные классы клиента для справки |
 | `docs/` | Описание фиксов и аудит деобфускации |
@@ -129,7 +130,7 @@ GitHub в 100 МБ.
 .\run.cmd       # запустить лаунчер без упаковки
 
 # то же самое вручную:
-.\gradlew prepareAq1Fix prepareShieldBreakFix   # патч-классы в build/celestial-fix и run/celestial-fix
+.\gradlew prepareAq1Fix prepareShieldBreakFix prepareClientPatches   # патч-классы в build/celestial-fix и run/celestial-fix
 .\gradlew packageLauncher launcherZip           # app-image + build/distributions/*.zip
 .\gradlew launcher                              # окно лаунчера без упаковки
 ```

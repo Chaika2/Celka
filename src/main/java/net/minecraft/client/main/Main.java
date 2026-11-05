@@ -35,6 +35,12 @@ public final class Main {
     }
 
     public static void main(String[] args) throws Throwable {
+        // The client reads its HUD name from ru.ntfhack.UserInfo, which is
+        // patched (client-patch-src) to prefer this system property. Set it
+        // before the real Main runs so the WaterMark shows the nickname the
+        // player actually joined with.
+        applyUsername(args);
+
         File sourceJar = sourceJar();
         File appHome = appHome(sourceJar);
         File root = resolveCollapseLoaderRoot(sourceJar);
@@ -94,11 +100,30 @@ public final class Main {
         }
     }
 
+    /** Stores {@code --username <name>} in a system property for the game. */
+    private static void applyUsername(String[] args) {
+        if (args == null) {
+            return;
+        }
+        for (int i = 0; i < args.length; i++) {
+            String value = null;
+            if ("--username".equals(args[i]) && i + 1 < args.length) {
+                value = args[i + 1];
+            } else if (args[i] != null && args[i].startsWith("--username=")) {
+                value = args[i].substring("--username=".length());
+            }
+            if (value != null && !value.isBlank()) {
+                System.setProperty("celestial.username", value);
+                return;
+            }
+        }
+    }
+
     private static File resolveAq1FixDir() {
         String override = System.getProperty("celestial.aq1fix");
         if (override != null && !override.isBlank()) {
             File dir = new File(override);
-            if (new File(dir, "celestial/Aq_1.class").isFile()) {
+            if (hasFixClasses(dir)) {
                 return dir.getAbsoluteFile();
             }
         }
@@ -111,11 +136,17 @@ public final class Main {
             parent == null ? null : new File(parent, "celestial-fix")
         };
         for (File dir : candidates) {
-            if (dir != null && new File(dir, "celestial/Aq_1.class").isFile()) {
+            if (dir != null && hasFixClasses(dir)) {
                 return dir.getAbsoluteFile();
             }
         }
         return null;
+    }
+
+    private static boolean hasFixClasses(File dir) {
+        return new File(dir, "celestial/Aq_1.class").isFile()
+            || new File(dir, "celestial/BE.class").isFile()
+            || new File(dir, "ru/ntfhack/UserInfo.class").isFile();
     }
 
     private static File resolvePacketTapDir() {

@@ -15,9 +15,9 @@ client log visible in the same window.
 | `gradlew packageLauncher` | Builds the standalone Windows app-image with a bundled Java 21 runtime: `build/launcher-app/CelestialLauncher/CelestialLauncher.exe`. |
 | `gradlew launcherZip` | Same image packed into `build/distributions/CelestialLauncher-windows-x64.zip`. |
 
-`run`, `runClient` and `launcher` all depend on `prepareAq1Fix` and
-`prepareShieldBreakFix`, so the patched classes in `run/celestial-fix` are
-always up to date before the game starts.
+`run`, `runClient` and `launcher` all depend on `prepareAq1Fix`,
+`prepareShieldBreakFix` and `prepareClientPatches`, so the patched classes in
+`run/celestial-fix` are always up to date before the game starts.
 
 `packageLauncher` and `launcherZip` additionally need
 `runtime/celestial-client-runtime.jar` (see [Game runtime](#game-runtime)).
@@ -37,7 +37,11 @@ The nickname is used for:
 * the offline UUID, derived exactly like a vanilla offline server does:
   `UUID.nameUUIDFromBytes("OfflinePlayer:" + nick)`. The same nickname always
   produces the same UUID, which keeps inventories/permissions stable on offline
-  servers.
+  servers;
+* the **WaterMark** in the client HUD. The bootstrap stores `--username` in the
+  `celestial.username` system property and the patched `ru.ntfhack.UserInfo`
+  reads it, so the HUD shows the same nick instead of `LORDMAKAVTOJJ`. The UID
+  shown next to it is random (six digits) and changes on every launch.
 
 It is **not** a Mojang/Ely.by login: this is an offline session
 (`--accessToken 0 --userType legacy`), which is what the client already used.
@@ -139,7 +143,7 @@ build/launcher-app/CelestialLauncher/
 │   ├── celestial-libraries/
 │   │   └── celestial-client-remapped.jar <- game runtime (flat celestial.*)
 │   ├── natives/               <- LWJGL/JNA natives
-│   ├── celestial-fix/         <- patched celestial/*.class (Aq_1 + rrnD_2)
+│   ├── celestial-fix/         <- patched classes (Aq_1, rrnD_2, BE, UserInfo)
 │   └── run/                   <- created on first launch: configs, worlds, assets/
 └── runtime/                   <- bundled Java 21 (all modules) + java.exe
 ```

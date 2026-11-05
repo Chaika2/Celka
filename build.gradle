@@ -352,6 +352,7 @@ tasks.named('run', JavaExec) {
     description = 'Runs the Celestial Client'
     dependsOn 'prepareAq1Fix'
     dependsOn 'prepareShieldBreakFix'
+    dependsOn 'prepareClientPatches'
     configureClientExec(it)
 }
 
@@ -360,6 +361,7 @@ tasks.register('runClient', JavaExec) {
     description = 'Runs the Celestial Client'
     dependsOn 'prepareAq1Fix'
     dependsOn 'prepareShieldBreakFix'
+    dependsOn 'prepareClientPatches'
     configureClientExec(it)
 }
 
@@ -377,6 +379,7 @@ tasks.register('launcher', JavaExec) {
     description = 'Opens the Celestial launcher window (nickname + start button)'
     dependsOn 'prepareAq1Fix'
     dependsOn 'prepareShieldBreakFix'
+    dependsOn 'prepareClientPatches'
 
     def targetGameDir = file('run')
     if (!targetGameDir.exists()) targetGameDir.mkdirs()
@@ -446,7 +449,7 @@ tasks.register('launcherJar', Jar) {
 tasks.register('prepareLauncherInput', Sync) {
     group = 'distribution'
     description = 'Stages jars, natives and patched classes for the jpackage app-image'
-    dependsOn 'launcherJar', 'launcherClientJar', 'prepareAq1Fix', 'prepareShieldBreakFix'
+    dependsOn 'launcherJar', 'launcherClientJar', 'prepareAq1Fix', 'prepareShieldBreakFix', 'prepareClientPatches'
     into layout.buildDirectory.dir('launcher-input')
     from(tasks.named('launcherJar'))
     from(tasks.named('launcherClientJar'))
@@ -507,7 +510,7 @@ tasks.register('packageLauncher', Exec) {
             '--type', 'app-image',
             '--dest', outputRoot.absolutePath,
             '--name', 'CelestialLauncher',
-            '--app-version', '1.0.1',
+            '--app-version', '1.0.2',
             '--vendor', 'Celestial',
             '--description', 'Celestial Launcher (Beta 1.16.5)',
             '--input', inputDir.absolutePath,
@@ -796,6 +799,86 @@ tasks.register('prepareShieldBreakFix') {
             runAq1.parentFile.mkdirs()
             runAq1.bytes = buildAq1.bytes
             println "[ShieldBreak fix] wrote ${runAq1} (${buildAq1.length()} bytes)"
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// prepareClientPatches
+//
+// Compiles the remaining client overrides against the bundled flat runtime:
+//   * ru/ntfhack/UserInfo  - HUD name from --username, random per-run UID,
+//                            no more hard-coded LORDMAKAVTOJJ / UID 2.
+//   * celestial/BE         - stops the client from opening Telegram, Discord
+//                            and VK links by itself.
+//
+// Like the shield-break patch, the classes land in build/celestial-fix and
+// run/celestial-fix. The game classloader puts that directory first, so these
+// copies win over the ones inside the runtime jar.
+// ---------------------------------------------------------------------------
+tasks.register('prepareClientPatches') {
+    group = 'build'
+    description = 'Compiles the UserInfo/BE client overrides into build/celestial-fix and run/celestial-fix'
+
+    def srcDir = file('client-patch-src')
+    def outDir = file('build/client-patches')
+    def buildFix = file('build/celestial-fix')
+    def runFix = file('run/celestial-fix')
+    def runtimeJar = file('runtime/celestial-client-runtime.jar')
+
+    dependsOn 'prepareAq1Fix', 'prepareShieldBreakFix'
+
+    inputs.dir(srcDir).optional()
+    inputs.file(runtimeJar).optional()
+
+    doLast {
+        if (!runtimeJar.isFile()) {
+            println "[Client patches] runtime jar not found, skipping: ${runtimeJar}"
+            return
+        }
+
+        def launcher = javaToolchains.launcherFor(java.toolchain).get()
+        def javac = new File(launcher.metadata.installationPath.asFile, 'bin/javac')
+        if (System.getProperty('os.name').toLowerCase().contains('win')) {
+            javac = new File(javac.parentFile, 'javac.exe')
+        }
+
+        def sources = fileTree(srcDir) { include '**/*.java' }.files.collect { it.absolutePath }
+        if (sources.isEmpty()) {
+            println "[Client patches] no sources in ${srcDir}, skipping"
+            return
+        }
+
+        outDir.deleteDir()
+        outDir.mkdirs()
+
+        def libraryJars = fileTree('libs') { include '*.jar' }.files
+        def classpath = ([runtimeJar] + libraryJars).collect { it.absolutePath }.join(File.pathSeparator)
+
+        def result = exec {
+            ignoreExitValue = true
+            commandLine([javac.absolutePath, '-encoding', 'UTF-8', '-nowarn',
+                         '-cp', classpath, '-d', outDir.absolutePath] + sources)
+        }
+        if (result.exitValue != 0) {
+            throw new GradleException("Client patches failed to compile (javac exit ${result.exitValue})")
+        }
+
+        def required = ['ru/ntfhack/UserInfo.class', 'celestial/BE.class']
+        required.each { relative ->
+            if (!new File(outDir, relative).isFile()) {
+                throw new GradleException("Client patches did not produce ${relative}")
+            }
+        }
+
+        fileTree(outDir) { include '**/*.class' }.files.sort { it.path }.each { classFile ->
+            def relative = outDir.toPath().relativize(classFile.toPath()).toString()
+            [buildFix, runFix].each { targetRoot ->
+                def target = new File(targetRoot, relative)
+                target.parentFile.mkdirs()
+                target.bytes = classFile.bytes
+            }
+            println "[Client patches] wrote ${relative} (${classFile.length()} bytes)"
         }
     }
 }

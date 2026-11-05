@@ -201,7 +201,9 @@ public final class GameLauncher {
         candidates.add(new File(projectRoot(), "celestial-fix"));
         for (File candidate : candidates) {
             if (new File(candidate, "celestial/Aq_1.class").isFile()
-                || new File(candidate, "celestial/rrnD_2.class").isFile()) {
+                || new File(candidate, "celestial/rrnD_2.class").isFile()
+                || new File(candidate, "celestial/BE.class").isFile()
+                || new File(candidate, "ru/ntfhack/UserInfo.class").isFile()) {
                 return candidate.getAbsoluteFile();
             }
         }
