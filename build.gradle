@@ -513,7 +513,7 @@ tasks.register('packageLauncher', Exec) {
             '--type', 'app-image',
             '--dest', outputRoot.absolutePath,
             '--name', 'CelestialLauncher',
-            '--app-version', '1.0.2',
+            '--app-version', '1.0.3',
             '--vendor', 'Celestial',
             '--description', 'Celestial Launcher (Beta 1.16.5)',
             '--input', inputDir.absolutePath,
