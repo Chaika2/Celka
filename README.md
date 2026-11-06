@@ -89,6 +89,7 @@ Java устанавливать не нужно — она уже внутри �
 | В логе `Unable to delete directory ... launcher-app` | Закрой уже запущенные `CelestialLauncher.exe` и игру, затем повтори сборку |
 | Вылет при входе на сервер | Обнови сборку из Releases — в старых версиях был кик из-за телепорта |
 | Щит не ломается | В Attack Aura должна быть включена галочка `ByPass SB`, топор — в хотбаре |
+| Baritone сыпет `Pathing exception ... rpr_3.id_implements()` при копании ancient debris | Обнови сборку: исправлен пустой массив направлений в `MovementAscend` (см. `docs/baritone-movement-npe.md`) |
 
 ---
 
@@ -139,6 +140,7 @@ GitHub в 100 МБ.
 
 * `docs/aq1-teleport-fix.md` — фикс кика при телепорте
 * `docs/shield-break-fix.md` — слом щита топором (`ByPass SB`)
+* `docs/baritone-movement-npe.md` — фикс NPE при постановке блоков Baritone (ancient debris)
 * `docs/launcher.md` — устройство лаунчера
 * `docs/deobfuscation-audit.md`, `docs/obfuscator-signature.md` — аудит деобфускации
 * `docs/prior-attempt-Modules_Renamed.md` — история предыдущей попытки
