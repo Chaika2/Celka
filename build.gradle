@@ -354,6 +354,7 @@ tasks.named('run', JavaExec) {
     dependsOn 'prepareShieldBreakFix'
     dependsOn 'prepareClientPatches'
     dependsOn 'prepareBaritoneMovementFix'
+    dependsOn 'prepareDiscordRpcFix'
     configureClientExec(it)
 }
 
@@ -364,6 +365,7 @@ tasks.register('runClient', JavaExec) {
     dependsOn 'prepareShieldBreakFix'
     dependsOn 'prepareClientPatches'
     dependsOn 'prepareBaritoneMovementFix'
+    dependsOn 'prepareDiscordRpcFix'
     configureClientExec(it)
 }
 
@@ -383,6 +385,7 @@ tasks.register('launcher', JavaExec) {
     dependsOn 'prepareShieldBreakFix'
     dependsOn 'prepareClientPatches'
     dependsOn 'prepareBaritoneMovementFix'
+    dependsOn 'prepareDiscordRpcFix'
 
     def targetGameDir = file('run')
     if (!targetGameDir.exists()) targetGameDir.mkdirs()
@@ -452,7 +455,7 @@ tasks.register('launcherJar', Jar) {
 tasks.register('prepareLauncherInput', Sync) {
     group = 'distribution'
     description = 'Stages jars, natives and patched classes for the jpackage app-image'
-    dependsOn 'launcherJar', 'launcherClientJar', 'prepareAq1Fix', 'prepareShieldBreakFix', 'prepareClientPatches', 'prepareBaritoneMovementFix'
+    dependsOn 'launcherJar', 'launcherClientJar', 'prepareAq1Fix', 'prepareShieldBreakFix', 'prepareClientPatches', 'prepareBaritoneMovementFix', 'prepareDiscordRpcFix'
     into layout.buildDirectory.dir('launcher-input')
     from(tasks.named('launcherJar'))
     from(tasks.named('launcherClientJar'))
@@ -829,7 +832,7 @@ tasks.register('prepareClientPatches') {
     def runFix = file('run/celestial-fix')
     def runtimeJar = file('runtime/celestial-client-runtime.jar')
 
-    dependsOn 'prepareAq1Fix', 'prepareShieldBreakFix', 'prepareBaritoneMovementFix'
+    dependsOn 'prepareAq1Fix', 'prepareShieldBreakFix', 'prepareBaritoneMovementFix', 'prepareDiscordRpcFix'
 
     inputs.dir(srcDir).optional()
     inputs.file(runtimeJar).optional()
@@ -979,6 +982,119 @@ tasks.register('prepareBaritoneMovementFix') {
             target.parentFile.mkdirs()
             target.bytes = patchedClass.bytes
             println "[Baritone movement fix] wrote ${target} (${patchedClass.length()} bytes)"
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// prepareDiscordRpcFix
+//
+// Patches celestial.rrZP with discord-rpc-fix-src/DiscordRpcPresenceFix:
+//   * the fixed 2026 epoch in the static initializer becomes
+//     System.currentTimeMillis(), so the presence timer starts at 00:00;
+//   * the hard-coded "Build » 1.1 (1.16.5)" state line is replaced with the
+//     server the player is on (helper celestial.DiscordRpcServer).
+// The patched class and the helper are written to both build/celestial-fix and
+// run/celestial-fix, like the other client patches. The nested game
+// classloader prepends that directory, so they win over the runtime jar.
+// ---------------------------------------------------------------------------
+tasks.register('prepareDiscordRpcFix') {
+    group = 'build'
+    description = 'Patches celestial/rrZP.class: Discord RPC timer from 00:00 and current server in the presence'
+
+    def toolSrcDir = file('discord-rpc-fix-src')
+    def toolOut = file('build/discord-rpc-fix-tool')
+    def workDir = file('build/discord-rpc-fix')
+    def runtimeJar = file('runtime/celestial-client-runtime.jar')
+    def buildFix = file('build/celestial-fix')
+    def runFix = file('run/celestial-fix')
+    def buildTarget = file('build/celestial-fix/celestial/rrZP.class')
+    def runTarget = file('run/celestial-fix/celestial/rrZP.class')
+    def buildHelper = file('build/celestial-fix/celestial/DiscordRpcServer.class')
+    def runHelper = file('run/celestial-fix/celestial/DiscordRpcServer.class')
+
+    inputs.dir(toolSrcDir).optional()
+    inputs.file(runtimeJar).optional()
+    outputs.file(buildTarget).optional()
+    outputs.file(runTarget).optional()
+    outputs.file(buildHelper).optional()
+    outputs.file(runHelper).optional()
+
+    doLast {
+        if (!runtimeJar.isFile()) {
+            println "[DiscordRPC fix] runtime jar not found, skipping: ${runtimeJar}"
+            return
+        }
+        def sources = fileTree(toolSrcDir) { include '**/*.java' }.files.collect { it.absolutePath }
+        if (sources.isEmpty()) {
+            println "[DiscordRPC fix] no sources in ${toolSrcDir}, skipping"
+            return
+        }
+
+        def launcher = javaToolchains.launcherFor(java.toolchain).get()
+        def javac = new File(launcher.metadata.installationPath.asFile, 'bin/javac')
+        def javaExe = new File(launcher.metadata.installationPath.asFile, 'bin/java')
+        if (System.getProperty('os.name').toLowerCase().contains('win')) {
+            javac = new File(javac.parentFile, 'javac.exe')
+            javaExe = new File(javaExe.parentFile, 'java.exe')
+        }
+
+        def asmJars = configurations.remapWorker.files.collect { it.absolutePath }
+        def libraryJars = fileTree('libs') { include '*.jar' }.files.collect { it.absolutePath }
+        def sep = File.pathSeparator
+
+        toolOut.deleteDir()
+        toolOut.mkdirs()
+        workDir.deleteDir()
+        workDir.mkdirs()
+
+        // The helper (celestial.DiscordRpcServer) references the runtime jar,
+        // the fix tool itself needs ASM.
+        def compileClasspath = (asmJars + [runtimeJar.absolutePath] + libraryJars).join(sep)
+        def compiled = exec {
+            ignoreExitValue = true
+            commandLine([javac.absolutePath, '-encoding', 'UTF-8', '-nowarn',
+                         '-cp', compileClasspath, '-d', toolOut.absolutePath] + sources)
+        }
+        if (compiled.exitValue != 0) {
+            throw new GradleException("DiscordRPC fix tool failed to compile (javac exit ${compiled.exitValue})")
+        }
+
+        def inputClass = new File(workDir, 'celestial/rrZP.class')
+        inputClass.parentFile.mkdirs()
+        new java.util.zip.ZipFile(runtimeJar).withCloseable { zip ->
+            def entry = zip.getEntry('celestial/rrZP.class')
+            if (entry == null) {
+                throw new GradleException("celestial/rrZP.class not found in ${runtimeJar}")
+            }
+            inputClass.bytes = zip.getInputStream(entry).bytes
+        }
+
+        def patchedClass = new File(workDir, 'celestial/rrZP.patched.class')
+        def patched = exec {
+            ignoreExitValue = true
+            commandLine([javaExe.absolutePath, '-cp', toolOut.absolutePath + sep + asmJars.join(sep),
+                         'DiscordRpcPresenceFix', inputClass.absolutePath, patchedClass.absolutePath])
+        }
+        if (patched.exitValue != 0) {
+            throw new GradleException("DiscordRPC fix tool failed (java exit ${patched.exitValue})")
+        }
+
+        [buildTarget, runTarget].each { target ->
+            target.parentFile.mkdirs()
+            target.bytes = patchedClass.bytes
+            println "[DiscordRPC fix] wrote ${target} (${patchedClass.length()} bytes)"
+        }
+
+        def helper = new File(toolOut, 'celestial/DiscordRpcServer.class')
+        if (!helper.isFile()) {
+            throw new GradleException("DiscordRPC fix did not produce ${helper}")
+        }
+        [buildFix, runFix].each { root ->
+            def target = new File(root, 'celestial/DiscordRpcServer.class')
+            target.parentFile.mkdirs()
+            target.bytes = helper.bytes
+            println "[DiscordRPC fix] wrote ${target} (${helper.length()} bytes)"
         }
     }
 }

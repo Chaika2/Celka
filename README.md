@@ -90,6 +90,7 @@ Java устанавливать не нужно — она уже внутри �
 | Вылет при входе на сервер | Обнови сборку из Releases — в старых версиях был кик из-за телепорта |
 | Щит не ломается | В Attack Aura должна быть включена галочка `ByPass SB`, топор — в хотбаре |
 | Baritone сыпет `Pathing exception ... rpr_3.id_implements()` при копании ancient debris | Обнови сборку: исправлен пустой массив направлений в `MovementAscend` (см. `docs/baritone-movement-npe.md`) |
+| В Discord показывается 2000+ часов игры | Обнови сборку: время старта RPC больше не зашито константой, а в статусе виден сервер (см. `docs/discord-rpc-fix.md`) |
 
 ---
 
@@ -103,6 +104,7 @@ Java устанавливать не нужно — она уже внутри �
 | `shieldbreak-src/` | Shadow-классы `rrnD_2`, `rrwI_2` — фикс слома щита (`ByPass SB`) |
 | `client-patch-src/` | Патчи `UserInfo` (ник и случайный UID в WaterMark) и `BE` (без автозапуска ссылок) |
 | `packettap-src/` | Перехватчик пакетов для отладки |
+| `discord-rpc-fix-src/` | ASM-тул `DiscordRpcPresenceFix` + хелпер — таймер RPC с 00:00 и сервер в статусе |
 | `deobf/`, `deobf-final/` | Декомпилированные классы клиента для справки |
 | `docs/` | Описание фиксов и аудит деобфускации |
 | `libs/` | Библиотеки, с которыми компилируется проект |
@@ -141,6 +143,7 @@ GitHub в 100 МБ.
 * `docs/aq1-teleport-fix.md` — фикс кика при телепорте
 * `docs/shield-break-fix.md` — слом щита топором (`ByPass SB`)
 * `docs/baritone-movement-npe.md` — фикс NPE при постановке блоков Baritone (ancient debris)
+* `docs/discord-rpc-fix.md` — таймер Discord RPC с 00:00 и сервер в статусе
 * `docs/launcher.md` — устройство лаунчера
 * `docs/deobfuscation-audit.md`, `docs/obfuscator-signature.md` — аудит деобфускации
 * `docs/prior-attempt-Modules_Renamed.md` — история предыдущей попытки
